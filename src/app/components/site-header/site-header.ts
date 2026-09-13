@@ -20,7 +20,6 @@ export class SiteHeader {
   readonly nav = [
     { key: 'about' as const, href: '#about' },
     { key: 'skills' as const, href: '#skills' },
-    { key: 'platforms' as const, href: '#platforms' },
     { key: 'experience' as const, href: '#experience' },
     { key: 'education' as const, href: '#education' },
     { key: 'contact' as const, href: '#contact' },

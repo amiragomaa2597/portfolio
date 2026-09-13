@@ -45,7 +45,6 @@ export interface ContactChannel {
 export const NAV_LINKS: NavLink[] = [
   { label: 'About', href: '#about' },
   { label: 'Skills', href: '#skills' },
-  { label: 'SaaS', href: '#platforms' },
   { label: 'Experience', href: '#experience' },
   { label: 'Education', href: '#education' },
   { label: 'Contact', href: '#contact' },
@@ -98,6 +97,14 @@ export const SKILLS: SkillGroup[] = [
     techs: [
       { name: 'Modular Monolith', slug: 'architecture' },
       { name: 'N-Tiers', slug: 'architecture' },
+    ],
+  },
+  {
+    title: 'Multi-Tenant & SaaS',
+    accent: '#c4a035',
+    techs: [
+      { name: 'Multi-Tenant', slug: 'architecture' },
+      { name: 'SaaS', slug: 'architecture' },
     ],
   },
   {

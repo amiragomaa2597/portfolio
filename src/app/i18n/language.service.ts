@@ -8,7 +8,6 @@ export interface UiCopy {
   nav: {
     about: string;
     skills: string;
-    platforms: string;
     experience: string;
     education: string;
     contact: string;
@@ -39,12 +38,6 @@ export interface UiCopy {
     eyebrow: string;
     title: string;
     groups: Record<string, string>;
-  };
-  platforms: {
-    eyebrow: string;
-    title: string;
-    lead: string;
-    cards: Array<{ title: string; body: string; points: string[] }>;
   };
   experience: {
     eyebrow: string;
@@ -96,7 +89,6 @@ const EN: UiCopy = {
   nav: {
     about: 'About',
     skills: 'Skills',
-    platforms: 'SaaS',
     experience: 'Experience',
     education: 'Education',
     contact: 'Contact',
@@ -134,34 +126,10 @@ const EN: UiCopy = {
       Mobile: 'Mobile',
       Database: 'Database',
       Architecture: 'Architecture',
+      'Multi-Tenant & SaaS': 'Multi-Tenant & SaaS',
       'DevOps & Cloud': 'DevOps & Cloud',
       Methodologies: 'Methodologies',
     },
-  },
-  platforms: {
-    eyebrow: 'Platforms',
-    title: 'Multi-Tenant & SaaS',
-    lead: 'Building shared platforms that serve many clients securely — with clear tenant isolation and cloud-ready delivery.',
-    cards: [
-      {
-        title: 'Multi-Tenant',
-        body: 'Designing and implementing multi-tenant systems so multiple clients run on one platform with isolated data and configuration.',
-        points: [
-          'Tenant isolation and shared infrastructure',
-          'Client-specific configuration support',
-          'Scalable ERP multi-client delivery',
-        ],
-      },
-      {
-        title: 'SaaS',
-        body: 'Delivering software as a service — web and mobile products that stay reliable as users and tenants grow.',
-        points: [
-          'Cloud-ready product delivery',
-          'REST APIs for connected services',
-          'Production deployments and store releases',
-        ],
-      },
-    ],
   },
   experience: {
     eyebrow: 'Experience',
@@ -279,7 +247,6 @@ const AR: UiCopy = {
   nav: {
     about: 'نبذة',
     skills: 'المهارات',
-    platforms: 'SaaS',
     experience: 'الخبرة',
     education: 'التعليم',
     contact: 'تواصل',
@@ -317,34 +284,10 @@ const AR: UiCopy = {
       Mobile: 'الموبايل',
       Database: 'قواعد البيانات',
       Architecture: 'الهندسة المعمارية',
+      'Multi-Tenant & SaaS': 'متعدد المستأجرين وSaaS',
       'DevOps & Cloud': 'DevOps والسحابة',
       Methodologies: 'المنهجيات',
     },
-  },
-  platforms: {
-    eyebrow: 'المنصات',
-    title: 'متعدد المستأجرين وSaaS',
-    lead: 'بناء منصات مشتركة تخدم عدة عملاء بأمان — مع عزل واضح للمستأجرين وتسليم جاهز للسحابة.',
-    cards: [
-      {
-        title: 'متعدد المستأجرين',
-        body: 'تصميم وتنفيذ أنظمة متعددة المستأجرين بحيث يعمل عدة عملاء على منصة واحدة مع عزل البيانات والإعدادات.',
-        points: [
-          'عزل المستأجرين وبنية تحتية مشتركة',
-          'دعم إعدادات خاصة بكل عميل',
-          'تسليم ERP لعدة عملاء بقابلية توسع',
-        ],
-      },
-      {
-        title: 'SaaS',
-        body: 'تقديم البرمجيات كخدمة — منتجات ويب وموبايل تبقى موثوقة مع نمو المستخدمين والمستأجرين.',
-        points: [
-          'تسليم منتجات جاهزة للسحابة',
-          'واجهات REST للخدمات المتصلة',
-          'نشر إنتاجي وإصدارات المتاجر',
-        ],
-      },
-    ],
   },
   experience: {
     eyebrow: 'الخبرة',
