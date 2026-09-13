@@ -16,11 +16,18 @@
         deployment.
       </p>
       <ul class="chips">
-        <li><a href="mailto:amiragomaa2597@gmail.com">Email</a></li>
-        <li><a href="https://linkedin.com/in/amira-gomaa-58b41a17a" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
-        <li><a href="https://github.com/amiragomaa2597" target="_blank" rel="noopener noreferrer">GitHub</a></li>
-        <li><a href="https://wa.me/201096825528" target="_blank" rel="noopener noreferrer">WhatsApp</a></li>
-        <li><a href="tel:+201067784941">Call</a></li>
+        @for (item of socials; track item.label) {
+          <li>
+            <a
+              [href]="item.href"
+              [attr.target]="item.external ? '_blank' : null"
+              [attr.rel]="item.external ? 'noopener noreferrer' : null"
+            >
+              <app-social-icon [name]="item.icon" [label]="item.label" />
+              {{ item.label }}
+            </a>
+          </li>
+        }
       </ul>
     </div>
   </div>

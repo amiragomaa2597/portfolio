@@ -17,8 +17,13 @@
           appReveal
           [appRevealDelay]="i * 60"
         >
-          <span class="label">{{ item.label }}</span>
-          <span class="value">{{ item.value }}</span>
+          <span class="icon-wrap" aria-hidden="true">
+            <app-social-icon [name]="item.icon" [label]="item.label" />
+          </span>
+          <span class="text">
+            <span class="label">{{ item.label }}</span>
+            <span class="value">{{ item.value }}</span>
+          </span>
         </a>
       }
     </div>

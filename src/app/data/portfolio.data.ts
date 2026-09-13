@@ -32,6 +32,7 @@ export interface ContactChannel {
   label: string;
   value: string;
   href: string;
+  icon: 'whatsapp' | 'linkedin' | 'github' | 'email' | 'phone' | 'cv';
   external?: boolean;
 }
 
@@ -45,12 +46,12 @@ export const NAV_LINKS: NavLink[] = [
 
 export const SKILLS: SkillGroup[] = [
   { title: 'Backend', items: 'ASP.NET Core, .NET, C#, EF Core, Web API, REST APIs', accent: '#c9a227' },
-  { title: 'Frontend', items: 'Angular, TypeScript, JavaScript, HTML, CSS, Bootstrap', accent: '#2f6fed' },
-  { title: 'Mobile', items: 'Flutter, Android & iOS Deployment', accent: '#1bb8a8' },
-  { title: 'Database', items: 'SQL Server', accent: '#cc3d3d' },
-  { title: 'Architecture', items: 'Modular Monolith, Multi-Tenant, N-Tiers', accent: '#6b5b95' },
-  { title: 'DevOps & Cloud', items: 'Docker, AWS S3, Git, CI/CD', accent: '#1f8a70' },
-  { title: 'Methodologies', items: 'Agile Scrum', accent: '#b86b2b' },
+  { title: 'Frontend', items: 'Angular, TypeScript, JavaScript, HTML, CSS, Bootstrap', accent: '#a8891d' },
+  { title: 'Mobile', items: 'Flutter, Android & iOS Deployment', accent: '#e0bc45' },
+  { title: 'Database', items: 'SQL Server', accent: '#8a6f14' },
+  { title: 'Architecture', items: 'Modular Monolith, Multi-Tenant, N-Tiers', accent: '#b9972a' },
+  { title: 'DevOps & Cloud', items: 'Docker, AWS S3, Git, CI/CD', accent: '#d4af37' },
+  { title: 'Methodologies', items: 'Agile Scrum', accent: '#9a7b1a' },
 ];
 
 export const EXPERIENCE: ExperienceItem[] = [
@@ -108,33 +109,43 @@ export const CONTACTS: ContactChannel[] = [
     label: 'WhatsApp',
     value: '+20 10 96825528',
     href: 'https://wa.me/201096825528',
+    icon: 'whatsapp',
     external: true,
   },
   {
     label: 'Phone',
     value: '+20 106 778 4941',
     href: 'tel:+201067784941',
+    icon: 'phone',
   },
   {
     label: 'Email',
     value: 'amiragomaa2597@gmail.com',
     href: 'mailto:amiragomaa2597@gmail.com',
+    icon: 'email',
   },
   {
     label: 'LinkedIn',
     value: 'amira-gomaa-58b41a17a',
     href: 'https://linkedin.com/in/amira-gomaa-58b41a17a',
+    icon: 'linkedin',
     external: true,
   },
   {
     label: 'GitHub',
     value: 'amiragomaa2597',
     href: 'https://github.com/amiragomaa2597',
+    icon: 'github',
     external: true,
   },
   {
     label: 'Resume',
     value: 'Download PDF',
     href: 'Amira_Gomaa_Full_Stack_Developer_CV.pdf',
+    icon: 'cv',
   },
 ];
+
+export const SOCIAL_QUICK: ContactChannel[] = CONTACTS.filter((c) =>
+  ['whatsapp', 'linkedin', 'github', 'email', 'phone'].includes(c.icon),
+);

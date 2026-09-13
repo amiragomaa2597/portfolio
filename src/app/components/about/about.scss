@@ -53,7 +53,9 @@
 }
 
 .chips a {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
   padding: 0.55rem 0.95rem;
   border-radius: 999px;
   text-decoration: none;

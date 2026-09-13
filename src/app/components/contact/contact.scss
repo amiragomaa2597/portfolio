@@ -15,16 +15,16 @@
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   gap: 0.9rem;
   margin-top: 2rem;
 }
 
 .channel {
   display: flex;
-  flex-direction: column;
-  gap: 0.4rem;
-  padding: 1.15rem 1.2rem;
+  align-items: center;
+  gap: 0.95rem;
+  padding: 1.1rem 1.15rem;
   border-radius: 1rem;
   text-decoration: none;
   border: 1px solid rgba(224, 188, 69, 0.28);
@@ -37,6 +37,25 @@
   border-color: var(--gold-bright);
   background: rgba(201, 162, 39, 0.12);
   color: #fff8ea;
+}
+
+.icon-wrap {
+  flex: 0 0 auto;
+  width: 2.6rem;
+  height: 2.6rem;
+  display: grid;
+  place-items: center;
+  border-radius: 0.85rem;
+  font-size: 1.2rem;
+  color: #1a160c;
+  background: linear-gradient(135deg, var(--gold-bright), var(--gold));
+}
+
+.text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  min-width: 0;
 }
 
 .label {

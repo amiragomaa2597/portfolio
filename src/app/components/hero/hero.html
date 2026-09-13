@@ -1,28 +1,62 @@
 <section class="hero" id="top" aria-label="Introduction">
   <div class="hero-stage" aria-hidden="true">
+    <div class="beam"></div>
     <div class="hero-glow hero-glow-a"></div>
     <div class="hero-glow hero-glow-b"></div>
-    <div class="hero-grid"></div>
-    <div class="hero-orb"></div>
+    <div class="hero-frame"></div>
+    <div class="hero-grain"></div>
   </div>
 
-  <div class="hero-copy">
-    <p class="kicker">Portfolio · CV · Full Stack</p>
-    <p class="name">Amira Gomaa</p>
-    <h1>Full Stack Developer</h1>
-    <p class="lead">
-      Designing scalable web &amp; mobile products with .NET, Angular, and Flutter —
-      from multi-tenant ERP platforms to polished store releases.
-    </p>
-    <div class="actions">
-      <a class="btn gold" href="https://wa.me/201096825528" target="_blank" rel="noopener noreferrer">WhatsApp Me</a>
-      <a class="btn ghost" href="#experience">See experience</a>
-      <a class="btn ghost" href="Amira_Gomaa_Full_Stack_Developer_CV.pdf" download>Download CV</a>
+  <div class="hero-layout">
+    <div class="hero-copy">
+      <p class="kicker">Portfolio · CV · Full Stack</p>
+      <p class="name">Amira Gomaa</p>
+      <h1>Full Stack Developer</h1>
+      <p class="lead">
+        Designing scalable web &amp; mobile products with .NET, Angular, and Flutter —
+        from multi-tenant ERP platforms to polished store releases.
+      </p>
+
+      <div class="actions">
+        <a class="btn gold" href="https://wa.me/201096825528" target="_blank" rel="noopener noreferrer">
+          <app-social-icon name="whatsapp" label="WhatsApp" />
+          WhatsApp Me
+        </a>
+        <a class="btn ghost" href="#experience">See experience</a>
+        <a class="btn ghost" href="Amira_Gomaa_Full_Stack_Developer_CV.pdf" download>
+          <app-social-icon name="cv" label="CV" />
+          Download CV
+        </a>
+      </div>
+
+      <div class="social-row" aria-label="Social links">
+        @for (item of socials; track item.label) {
+          <a
+            class="social"
+            [href]="item.href"
+            [attr.target]="item.external ? '_blank' : null"
+            [attr.rel]="item.external ? 'noopener noreferrer' : null"
+            [attr.aria-label]="item.label"
+            [title]="item.label"
+          >
+            <app-social-icon [name]="item.icon" [label]="item.label" />
+          </a>
+        }
+      </div>
     </div>
-  </div>
 
-  <div class="stat-chip" aria-hidden="true">
-    <strong>3+ years</strong>
-    <span>shipping production systems</span>
+    <aside class="hero-panel" aria-hidden="true">
+      <p class="panel-label">Focus</p>
+      <ul>
+        <li>.NET APIs</li>
+        <li>Angular apps</li>
+        <li>Flutter mobile</li>
+        <li>Multi-tenant SaaS</li>
+      </ul>
+      <div class="panel-stat">
+        <strong>3+</strong>
+        <span>years shipping production systems</span>
+      </div>
+    </aside>
   </div>
 </section>

@@ -16,6 +16,20 @@
     @for (link of links; track link.href) {
       <a [href]="link.href" (click)="closeMenu()">{{ link.label }}</a>
     }
+    <div class="nav-socials">
+      @for (item of socials; track item.label) {
+        <a
+          class="nav-social"
+          [href]="item.href"
+          [attr.target]="item.external ? '_blank' : null"
+          [attr.rel]="item.external ? 'noopener noreferrer' : null"
+          [attr.aria-label]="item.label"
+          (click)="closeMenu()"
+        >
+          <app-social-icon [name]="item.icon" [label]="item.label" />
+        </a>
+      }
+    </div>
     <a class="cv" href="Amira_Gomaa_Full_Stack_Developer_CV.pdf" download (click)="closeMenu()">Download CV</a>
   </nav>
 </header>
