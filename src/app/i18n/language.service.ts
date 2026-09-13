@@ -178,8 +178,8 @@ const EN: UiCopy = {
         subtitle: 'RB College (Royale Business College)',
         year: 'Master’s',
         url: 'https://www.rb-college.co.uk/',
-        logo: 'assets/logos/rb-college.svg',
-        logoClass: 'logo-dark',
+        logo: 'assets/logos/rb-college.png',
+        logoClass: 'logo-light',
       },
       {
         title: 'ITI Professional Web Development Track',
@@ -344,8 +344,8 @@ const AR: UiCopy = {
         subtitle: 'كلية RB (Royale Business College)',
         year: 'ماجستير',
         url: 'https://www.rb-college.co.uk/',
-        logo: 'assets/logos/rb-college.svg',
-        logoClass: 'logo-dark',
+        logo: 'assets/logos/rb-college.png',
+        logoClass: 'logo-light',
       },
       {
         title: 'مسار تطوير الويب الاحترافي — ITI',
