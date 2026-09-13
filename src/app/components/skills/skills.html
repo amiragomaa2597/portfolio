@@ -16,9 +16,6 @@
                 @if (iconUrl(tech.slug); as src) {
                   @if (src) {
                     <img [src]="src" [alt]="tech.name + ' logo'" loading="lazy" (error)="onIconError($event)" />
-                    <span class="fallback" aria-hidden="true" hidden>{{ tech.name.charAt(0) }}</span>
-                  } @else {
-                    <span class="fallback" aria-hidden="true">{{ tech.name.charAt(0) }}</span>
                   }
                 }
                 <span>{{ tech.name }}</span>
