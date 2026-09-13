@@ -174,6 +174,14 @@ const EN: UiCopy = {
     title: 'Learning that shaped the craft',
     items: [
       {
+        title: 'MBA — Master of Business Administration',
+        subtitle: 'RB College (Royale Business College)',
+        year: 'Master’s',
+        url: 'https://www.rb-college.co.uk/',
+        logo: 'assets/logos/rb-college.svg',
+        logoClass: 'logo-dark',
+      },
+      {
         title: 'ITI Professional Web Development Track',
         subtitle: 'Information Technology Institute · 9 months',
         year: '2023',
@@ -331,6 +339,14 @@ const AR: UiCopy = {
     eyebrow: 'التعليم',
     title: 'تعليم شكّل المسيرة',
     items: [
+      {
+        title: 'ماجستير إدارة الأعمال — MBA',
+        subtitle: 'كلية RB (Royale Business College)',
+        year: 'ماجستير',
+        url: 'https://www.rb-college.co.uk/',
+        logo: 'assets/logos/rb-college.svg',
+        logoClass: 'logo-dark',
+      },
       {
         title: 'مسار تطوير الويب الاحترافي — ITI',
         subtitle: 'معهد تكنولوجيا المعلومات · 9 أشهر',

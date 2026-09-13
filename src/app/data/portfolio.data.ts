@@ -160,6 +160,14 @@ export const EXPERIENCE: ExperienceItem[] = [
 
 export const EDUCATION: EducationItem[] = [
   {
+    title: 'MBA — Master of Business Administration',
+    subtitle: 'RB College (Royale Business College)',
+    year: 'Master’s',
+    url: 'https://www.rb-college.co.uk/',
+    logo: 'assets/logos/rb-college.svg',
+    logoClass: 'logo-dark',
+  },
+  {
     title: 'ITI Professional Web Development Track',
     subtitle: 'Information Technology Institute · 9 months',
     year: '2023',
