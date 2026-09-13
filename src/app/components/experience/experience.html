@@ -1,0 +1,47 @@
+<section class="section experience" id="experience">
+  <div class="section-inner">
+    <div appReveal>
+      <p class="eyebrow">Experience</p>
+      <h2>Where I’ve made an impact</h2>
+    </div>
+
+    <div class="timeline">
+      @for (job of jobs; track job.company; let i = $index) {
+        <article class="job" appReveal [appRevealDelay]="i * 90">
+          <div class="logos">
+            <a class="logo-tile" [href]="job.companyUrl" target="_blank" rel="noopener noreferrer">
+              <img [src]="job.logo" [alt]="job.company + ' logo'" />
+            </a>
+            @if (job.secondaryLogo) {
+              <a class="logo-tile secondary" href="https://jadaratech.com/home/index" target="_blank" rel="noopener noreferrer">
+                <img [src]="job.secondaryLogo" alt="Jadara ERP logo" />
+              </a>
+            }
+          </div>
+
+          <div class="body">
+            <div class="meta">
+              <h3>
+                <a [href]="job.companyUrl" target="_blank" rel="noopener noreferrer">{{ job.company }}</a>
+              </h3>
+              <p class="role">{{ job.role }}</p>
+              <p class="period">{{ job.period }}</p>
+            </div>
+
+            <ul>
+              @for (bullet of job.bullets; track bullet) {
+                <li>{{ bullet }}</li>
+              }
+            </ul>
+
+            <div class="tags">
+              @for (tag of job.tags; track tag) {
+                <span>{{ tag }}</span>
+              }
+            </div>
+          </div>
+        </article>
+      }
+    </div>
+  </div>
+</section>

@@ -1,0 +1,31 @@
+<section class="section education" id="education">
+  <div class="section-inner">
+    <div appReveal>
+      <p class="eyebrow">Education</p>
+      <h2>Learning that shaped the craft</h2>
+    </div>
+
+    <div class="edu-grid">
+      @for (item of items; track item.title; let i = $index) {
+        <a
+          class="edu-card"
+          [class.logo-dark]="item.logoClass === 'logo-dark'"
+          [href]="item.url"
+          target="_blank"
+          rel="noopener noreferrer"
+          appReveal
+          [appRevealDelay]="i * 100"
+        >
+          <div class="logo-box">
+            <img [src]="item.logo" [alt]="item.title + ' logo'" />
+          </div>
+          <div class="text">
+            <h3>{{ item.title }}</h3>
+            <p>{{ item.subtitle }}</p>
+            <span>{{ item.year }}</span>
+          </div>
+        </a>
+      }
+    </div>
+  </div>
+</section>

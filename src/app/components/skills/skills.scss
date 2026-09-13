@@ -1,0 +1,58 @@
+.skills {
+  background:
+    radial-gradient(700px 320px at 100% 0%, rgba(201, 162, 39, 0.12), transparent 60%),
+    linear-gradient(180deg, transparent, rgba(42, 39, 35, 0.03), transparent);
+}
+
+.orbit {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.skill {
+  position: relative;
+  padding: 1.25rem 1.15rem 1.35rem;
+  border-radius: 1.1rem;
+  background: rgba(255, 255, 255, 0.45);
+  border: 1px solid rgba(18, 17, 15, 0.08);
+  overflow: hidden;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.skill::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: var(--accent);
+}
+
+.skill:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 18px 40px rgba(18, 17, 15, 0.1);
+}
+
+.index {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  color: color-mix(in srgb, var(--accent) 70%, black);
+  opacity: 0.7;
+}
+
+.skill h3 {
+  margin: 0.35rem 0 0.45rem;
+  font-size: 1.05rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.skill p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.95rem;
+}

@@ -1,0 +1,18 @@
+<section class="section skills" id="skills">
+  <div class="section-inner">
+    <div appReveal>
+      <p class="eyebrow">Technical Skills</p>
+      <h2>Stack I ship with</h2>
+    </div>
+
+    <div class="orbit">
+      @for (skill of skills; track skill.title; let i = $index) {
+        <article class="skill" appReveal [appRevealDelay]="i * 70" [style.--accent]="skill.accent">
+          <span class="index">{{ i + 1 | number: '2.0-0' }}</span>
+          <h3>{{ skill.title }}</h3>
+          <p>{{ skill.items }}</p>
+        </article>
+      }
+    </div>
+  </div>
+</section>

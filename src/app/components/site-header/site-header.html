@@ -1,0 +1,21 @@
+<header class="site-header" [class.is-scrolled]="scrolled()" [class.is-open]="menuOpen()">
+  <a class="brand" href="#top" (click)="closeMenu()">Amira Gomaa</a>
+
+  <button
+    class="menu-btn"
+    type="button"
+    [attr.aria-expanded]="menuOpen()"
+    aria-controls="primary-nav"
+    [attr.aria-label]="menuOpen() ? 'Close menu' : 'Open menu'"
+    (click)="toggleMenu()"
+  >
+    <span></span><span></span>
+  </button>
+
+  <nav id="primary-nav" class="nav" aria-label="Primary">
+    @for (link of links; track link.href) {
+      <a [href]="link.href" (click)="closeMenu()">{{ link.label }}</a>
+    }
+    <a class="cv" href="Amira_Gomaa_Full_Stack_Developer_CV.pdf" download (click)="closeMenu()">Download CV</a>
+  </nav>
+</header>

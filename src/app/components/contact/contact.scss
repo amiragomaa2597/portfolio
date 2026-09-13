@@ -1,0 +1,54 @@
+.contact {
+  background:
+    radial-gradient(600px 280px at 15% 20%, rgba(201, 162, 39, 0.18), transparent 55%),
+    linear-gradient(145deg, #15130f 0%, #241e14 55%, #12100d 100%);
+  color: #fff8ea;
+}
+
+.contact .eyebrow {
+  color: var(--gold-bright);
+}
+
+.contact .prose {
+  color: rgba(255, 248, 234, 0.76);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 0.9rem;
+  margin-top: 2rem;
+}
+
+.channel {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  padding: 1.15rem 1.2rem;
+  border-radius: 1rem;
+  text-decoration: none;
+  border: 1px solid rgba(224, 188, 69, 0.28);
+  background: rgba(255, 255, 255, 0.04);
+  transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+}
+
+.channel:hover {
+  transform: translateY(-4px);
+  border-color: var(--gold-bright);
+  background: rgba(201, 162, 39, 0.12);
+  color: #fff8ea;
+}
+
+.label {
+  font-size: 0.72rem;
+  font-weight: 750;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gold-bright);
+}
+
+.value {
+  font-size: 1.02rem;
+  font-weight: 550;
+  word-break: break-word;
+}

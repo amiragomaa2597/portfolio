@@ -1,0 +1,26 @@
+<section class="section contact" id="contact">
+  <div class="section-inner">
+    <div class="intro" appReveal>
+      <p class="eyebrow">Contact</p>
+      <h2>Let’s build something solid</h2>
+      <p class="prose">Every channel below is clickable — pick whatever is easiest.</p>
+    </div>
+
+    <div class="grid">
+      @for (item of channels; track item.label; let i = $index) {
+        <a
+          class="channel"
+          [href]="item.href"
+          [attr.target]="item.external ? '_blank' : null"
+          [attr.rel]="item.external ? 'noopener noreferrer' : null"
+          [attr.download]="item.label === 'Resume' ? true : null"
+          appReveal
+          [appRevealDelay]="i * 60"
+        >
+          <span class="label">{{ item.label }}</span>
+          <span class="value">{{ item.value }}</span>
+        </a>
+      }
+    </div>
+  </div>
+</section>

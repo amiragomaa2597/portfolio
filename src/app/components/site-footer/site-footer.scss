@@ -1,0 +1,16 @@
+.site-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  padding: 1.35rem clamp(1rem, 4vw, 2.4rem);
+  border-top: 1px solid rgba(18, 17, 15, 0.1);
+  background: rgba(250, 246, 238, 0.95);
+  font-size: 0.92rem;
+}
+
+.site-footer a {
+  text-decoration: none;
+  font-weight: 700;
+}
