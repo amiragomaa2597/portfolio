@@ -1,7 +1,7 @@
 import { DecimalPipe } from '@angular/common';
 import { Component } from '@angular/core';
 import { RevealDirective } from '../../directives/reveal.directive';
-import { SKILLS } from '../../data/portfolio.data';
+import { SKILLS, techIconUrl } from '../../data/portfolio.data';
 
 @Component({
   selector: 'app-skills',
@@ -11,4 +11,5 @@ import { SKILLS } from '../../data/portfolio.data';
 })
 export class Skills {
   readonly skills = SKILLS;
+  readonly iconUrl = techIconUrl;
 }

@@ -3,10 +3,15 @@ export interface NavLink {
   href: string;
 }
 
+export interface TechItem {
+  name: string;
+  slug: string;
+}
+
 export interface SkillGroup {
   title: string;
-  items: string;
   accent: string;
+  techs: TechItem[];
 }
 
 export interface ExperienceItem {
@@ -46,13 +51,66 @@ export const NAV_LINKS: NavLink[] = [
 ];
 
 export const SKILLS: SkillGroup[] = [
-  { title: 'Backend', items: 'ASP.NET Core, .NET, C#, EF Core, Web API, REST APIs', accent: '#c9a227' },
-  { title: 'Frontend', items: 'Angular, TypeScript, JavaScript, HTML, CSS, Bootstrap', accent: '#a8891d' },
-  { title: 'Mobile', items: 'Flutter, Android & iOS Deployment', accent: '#e0bc45' },
-  { title: 'Database', items: 'SQL Server', accent: '#8a6f14' },
-  { title: 'Architecture', items: 'Modular Monolith, Multi-Tenant, N-Tiers', accent: '#b9972a' },
-  { title: 'DevOps & Cloud', items: 'Docker, AWS S3, Git, CI/CD', accent: '#d4af37' },
-  { title: 'Methodologies', items: 'Agile Scrum', accent: '#9a7b1a' },
+  {
+    title: 'Backend',
+    accent: '#c9a227',
+    techs: [
+      { name: '.NET', slug: 'dotnet' },
+      { name: 'C#', slug: 'csharp' },
+      { name: 'ASP.NET', slug: 'dotnet' },
+      { name: 'Entity Framework', slug: 'dotnet' },
+      { name: 'REST APIs', slug: 'openapiinitiative' },
+    ],
+  },
+  {
+    title: 'Frontend',
+    accent: '#a8891d',
+    techs: [
+      { name: 'Angular', slug: 'angular' },
+      { name: 'TypeScript', slug: 'typescript' },
+      { name: 'JavaScript', slug: 'javascript' },
+      { name: 'HTML5', slug: 'html5' },
+      { name: 'CSS3', slug: 'css' },
+      { name: 'Tailwind', slug: 'tailwindcss' },
+    ],
+  },
+  {
+    title: 'Mobile',
+    accent: '#e0bc45',
+    techs: [
+      { name: 'Flutter', slug: 'flutter' },
+      { name: 'Android', slug: 'android' },
+      { name: 'iOS', slug: 'apple' },
+    ],
+  },
+  {
+    title: 'Database',
+    accent: '#8a6f14',
+    techs: [{ name: 'SQL Server', slug: 'microsoftsqlserver' }],
+  },
+  {
+    title: 'Architecture',
+    accent: '#b9972a',
+    techs: [
+      { name: 'Modular Monolith', slug: 'architecture' },
+      { name: 'N-Tiers', slug: 'architecture' },
+    ],
+  },
+  {
+    title: 'DevOps & Cloud',
+    accent: '#d4af37',
+    techs: [
+      { name: 'Docker', slug: 'docker' },
+      { name: 'AWS S3', slug: 'amazonaws' },
+      { name: 'Git', slug: 'git' },
+      { name: 'CI/CD', slug: 'githubactions' },
+    ],
+  },
+  {
+    title: 'Methodologies',
+    accent: '#9a7b1a',
+    techs: [{ name: 'Agile Scrum', slug: 'scrumalliance' }],
+  },
 ];
 
 export const EXPERIENCE: ExperienceItem[] = [
@@ -152,3 +210,11 @@ export const CONTACTS: ContactChannel[] = [
 export const SOCIAL_QUICK: ContactChannel[] = CONTACTS.filter((c) =>
   ['whatsapp', 'linkedin', 'github', 'email', 'phone'].includes(c.icon),
 );
+
+/** Simple Icons CDN helper */
+export function techIconUrl(slug: string): string {
+  if (slug === 'architecture') {
+    return '';
+  }
+  return `https://cdn.simpleicons.org/${slug}`;
+}

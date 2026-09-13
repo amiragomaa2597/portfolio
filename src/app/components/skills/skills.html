@@ -10,7 +10,20 @@
         <article class="skill" appReveal [appRevealDelay]="i * 70" [style.--accent]="skill.accent">
           <span class="index">{{ i + 1 | number: '2.0-0' }}</span>
           <h3>{{ skill.title }}</h3>
-          <p>{{ skill.items }}</p>
+          <ul class="techs">
+            @for (tech of skill.techs; track tech.name) {
+              <li class="tech" [title]="tech.name">
+                @if (iconUrl(tech.slug); as src) {
+                  @if (src) {
+                    <img [src]="src" [alt]="tech.name + ' logo'" loading="lazy" />
+                  } @else {
+                    <span class="fallback" aria-hidden="true">{{ tech.name.charAt(0) }}</span>
+                  }
+                }
+                <span>{{ tech.name }}</span>
+              </li>
+            }
+          </ul>
         </article>
       }
     </div>
