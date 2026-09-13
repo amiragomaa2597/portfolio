@@ -73,23 +73,10 @@
   color: var(--ink-soft);
 }
 
-.tech img,
-.fallback {
+.tech img {
   width: 1.35rem;
   height: 1.35rem;
   border-radius: 0.3rem;
   object-fit: contain;
   flex: 0 0 auto;
-}
-
-.tech img {
-  filter: none;
-}
-.fallback {
-  display: grid;
-  place-items: center;
-  background: linear-gradient(135deg, var(--gold-bright), var(--gold));
-  color: #1a160c;
-  font-size: 0.72rem;
-  font-weight: 800;
 }
