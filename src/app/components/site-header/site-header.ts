@@ -1,5 +1,6 @@
-import { Component, HostListener, signal } from '@angular/core';
-import { NAV_LINKS, SOCIAL_QUICK } from '../../data/portfolio.data';
+import { Component, HostListener, inject, signal } from '@angular/core';
+import { SOCIAL_QUICK } from '../../data/portfolio.data';
+import { LanguageService } from '../../i18n/language.service';
 import { SocialIcon } from '../social-icon/social-icon';
 
 @Component({
@@ -9,12 +10,21 @@ import { SocialIcon } from '../social-icon/social-icon';
   styleUrl: './site-header.scss',
 })
 export class SiteHeader {
-  readonly links = NAV_LINKS;
+  readonly i18n = inject(LanguageService);
   readonly socials = SOCIAL_QUICK.filter((s) =>
     ['whatsapp', 'linkedin', 'github'].includes(s.icon),
   );
   readonly menuOpen = signal(false);
   readonly scrolled = signal(false);
+
+  readonly nav = [
+    { key: 'about' as const, href: '#about' },
+    { key: 'skills' as const, href: '#skills' },
+    { key: 'platforms' as const, href: '#platforms' },
+    { key: 'experience' as const, href: '#experience' },
+    { key: 'education' as const, href: '#education' },
+    { key: 'contact' as const, href: '#contact' },
+  ];
 
   @HostListener('window:scroll')
   onScroll(): void {
@@ -27,5 +37,10 @@ export class SiteHeader {
 
   closeMenu(): void {
     this.menuOpen.set(false);
+  }
+
+  setLang(lang: 'en' | 'ar'): void {
+    this.i18n.setLang(lang);
+    this.closeMenu();
   }
 }

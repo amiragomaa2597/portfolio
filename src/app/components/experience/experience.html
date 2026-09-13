@@ -1,19 +1,19 @@
 <section class="section experience" id="experience">
   <div class="section-inner">
     <div appReveal>
-      <p class="eyebrow">Experience</p>
-      <h2>Where I’ve made an impact</h2>
+      <p class="eyebrow">{{ i18n.t().experience.eyebrow }}</p>
+      <h2>{{ i18n.t().experience.title }}</h2>
     </div>
 
     <div class="timeline">
-      @for (job of jobs; track job.company; let i = $index) {
+      @for (job of i18n.t().experience.jobs; track job.company; let i = $index) {
         <article class="job" appReveal [appRevealDelay]="i * 90">
           <div class="meta">
             <h3>
               <a [href]="job.companyUrl" target="_blank" rel="noopener noreferrer">{{ job.company }}</a>
             </h3>
             @if (job.product) {
-              <p class="product">Product: <strong>{{ job.product }}</strong></p>
+              <p class="product">{{ i18n.t().experience.product }}: <strong>{{ job.product }}</strong></p>
             }
             @if (job.note) {
               <p class="note">{{ job.note }}</p>

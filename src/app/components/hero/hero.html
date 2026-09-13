@@ -1,4 +1,4 @@
-<section class="hero" id="top" aria-label="Introduction">
+<section class="hero" id="top" [attr.aria-label]="i18n.t().hero.aria">
   <div class="hero-stage" aria-hidden="true">
     <div class="beam"></div>
     <div class="hero-glow hero-glow-a"></div>
@@ -9,28 +9,25 @@
 
   <div class="hero-layout">
     <div class="hero-copy">
-      <p class="kicker">Portfolio · CV · Full Stack</p>
-      <p class="name">Amira Gomaa</p>
-      <h1>Full Stack Developer</h1>
-      <p class="lead">
-        Designing scalable web &amp; mobile products with .NET, Angular, and Flutter —
-        from multi-tenant ERP platforms to polished store releases.
-      </p>
+      <p class="kicker">{{ i18n.t().hero.kicker }}</p>
+      <p class="name">{{ i18n.t().brand }}</p>
+      <h1>{{ i18n.t().hero.title }}</h1>
+      <p class="lead">{{ i18n.t().hero.lead }}</p>
 
       <div class="actions">
         <a class="btn gold" href="https://wa.me/201096825528" target="_blank" rel="noopener noreferrer">
           <app-social-icon name="whatsapp" label="WhatsApp" />
-          WhatsApp Me
+          {{ i18n.t().hero.whatsapp }}
         </a>
-        <a class="btn ghost" href="#experience">See experience</a>
+        <a class="btn ghost" href="#experience">{{ i18n.t().hero.seeExperience }}</a>
         <a class="btn ghost" href="Amira_Gomaa_Full_Stack_Developer_CV.pdf" download>
           <app-social-icon name="cv" label="CV" />
-          Download CV
+          {{ i18n.t().hero.downloadCv }}
         </a>
       </div>
 
-      <div class="social-row" aria-label="Social links">
-        @for (item of socials; track item.label) {
+      <div class="social-row" [attr.aria-label]="i18n.t().hero.socialAria">
+        @for (item of socials; track item.icon) {
           <a
             class="social"
             [href]="item.href"
@@ -46,16 +43,15 @@
     </div>
 
     <aside class="hero-panel" aria-hidden="true">
-      <p class="panel-label">Focus</p>
+      <p class="panel-label">{{ i18n.t().hero.focus }}</p>
       <ul>
-        <li>.NET APIs</li>
-        <li>Angular apps</li>
-        <li>Flutter mobile</li>
-        <li>Multi-tenant SaaS</li>
+        @for (item of i18n.t().hero.focusItems; track item) {
+          <li>{{ item }}</li>
+        }
       </ul>
       <div class="panel-stat">
         <strong>3+</strong>
-        <span>years shipping production systems</span>
+        <span>{{ i18n.t().hero.yearsLabel }}</span>
       </div>
     </aside>
   </div>

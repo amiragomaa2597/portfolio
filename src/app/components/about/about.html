@@ -2,21 +2,16 @@
   <div class="section-inner split" appReveal>
     <div class="photo-wrap">
       <div class="ring" aria-hidden="true"></div>
-      <img src="assets/images/portrait.jpg" alt="Portrait of Amira Gomaa" />
+      <img src="assets/images/portrait.jpg" [alt]="i18n.t().about.portraitAlt" />
       <div class="badge">.NET · Angular · Flutter</div>
     </div>
 
     <div class="copy">
-      <p class="eyebrow">About</p>
-      <h2>Reliable software. Clear business value.</h2>
-      <p class="prose">
-        Full Stack Developer with over 3 years of experience designing and delivering scalable web and
-        mobile applications using .NET, Angular, Flutter, and SQL Server. Experienced in ERP and HR
-        solutions, RESTful APIs, Multi-Tenant SaaS platforms, AWS integrations, and mobile application
-        deployment.
-      </p>
+      <p class="eyebrow">{{ i18n.t().about.eyebrow }}</p>
+      <h2>{{ i18n.t().about.title }}</h2>
+      <p class="prose">{{ i18n.t().about.body }}</p>
       <ul class="chips">
-        @for (item of socials; track item.label) {
+        @for (item of socials; track item.icon) {
           <li>
             <a
               [href]="item.href"

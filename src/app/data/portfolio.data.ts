@@ -45,6 +45,7 @@ export interface ContactChannel {
 export const NAV_LINKS: NavLink[] = [
   { label: 'About', href: '#about' },
   { label: 'Skills', href: '#skills' },
+  { label: 'SaaS', href: '#platforms' },
   { label: 'Experience', href: '#experience' },
   { label: 'Education', href: '#education' },
   { label: 'Contact', href: '#contact' },

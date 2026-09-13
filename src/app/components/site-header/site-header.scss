@@ -27,6 +27,40 @@
   letter-spacing: 0.01em;
 }
 
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  margin-inline-start: auto;
+}
+
+.lang-switch {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.2rem;
+  border-radius: 999px;
+  border: 1px solid rgba(18, 17, 15, 0.14);
+  background: rgba(255, 255, 255, 0.55);
+}
+
+.lang-btn {
+  min-width: 2.2rem;
+  height: 1.9rem;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--ink-soft);
+  font-weight: 750;
+  font-size: 0.78rem;
+  cursor: pointer;
+  font-family: var(--font-body);
+}
+
+.lang-btn.active {
+  background: var(--ink);
+  color: var(--paper);
+}
+
 .nav {
   display: flex;
   align-items: center;

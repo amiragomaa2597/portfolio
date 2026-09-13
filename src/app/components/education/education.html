@@ -1,12 +1,12 @@
 <section class="section education" id="education">
   <div class="section-inner">
     <div appReveal>
-      <p class="eyebrow">Education</p>
-      <h2>Learning that shaped the craft</h2>
+      <p class="eyebrow">{{ i18n.t().education.eyebrow }}</p>
+      <h2>{{ i18n.t().education.title }}</h2>
     </div>
 
     <div class="edu-grid">
-      @for (item of items; track item.title; let i = $index) {
+      @for (item of i18n.t().education.items; track item.title; let i = $index) {
         <a
           class="edu-card"
           [class.logo-dark]="item.logoClass === 'logo-dark'"

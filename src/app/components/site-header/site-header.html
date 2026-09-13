@@ -1,23 +1,44 @@
 <header class="site-header" [class.is-scrolled]="scrolled()" [class.is-open]="menuOpen()">
-  <a class="brand" href="#top" (click)="closeMenu()">Amira Gomaa</a>
+  <a class="brand" href="#top" (click)="closeMenu()">{{ i18n.t().brand }}</a>
 
-  <button
-    class="menu-btn"
-    type="button"
-    [attr.aria-expanded]="menuOpen()"
-    aria-controls="primary-nav"
-    [attr.aria-label]="menuOpen() ? 'Close menu' : 'Open menu'"
-    (click)="toggleMenu()"
-  >
-    <span></span><span></span>
-  </button>
+  <div class="header-actions">
+    <div class="lang-switch" role="group" [attr.aria-label]="i18n.lang() === 'en' ? 'Language' : 'اللغة'">
+      <button
+        type="button"
+        class="lang-btn"
+        [class.active]="i18n.lang() === 'en'"
+        (click)="setLang('en')"
+      >
+        EN
+      </button>
+      <button
+        type="button"
+        class="lang-btn"
+        [class.active]="i18n.lang() === 'ar'"
+        (click)="setLang('ar')"
+      >
+        ع
+      </button>
+    </div>
+
+    <button
+      class="menu-btn"
+      type="button"
+      [attr.aria-expanded]="menuOpen()"
+      aria-controls="primary-nav"
+      [attr.aria-label]="menuOpen() ? i18n.t().closeMenu : i18n.t().openMenu"
+      (click)="toggleMenu()"
+    >
+      <span></span><span></span>
+    </button>
+  </div>
 
   <nav id="primary-nav" class="nav" aria-label="Primary">
-    @for (link of links; track link.href) {
-      <a [href]="link.href" (click)="closeMenu()">{{ link.label }}</a>
+    @for (link of nav; track link.href) {
+      <a [href]="link.href" (click)="closeMenu()">{{ i18n.t().nav[link.key] }}</a>
     }
     <div class="nav-socials">
-      @for (item of socials; track item.label) {
+      @for (item of socials; track item.icon) {
         <a
           class="nav-social"
           [href]="item.href"
@@ -30,6 +51,8 @@
         </a>
       }
     </div>
-    <a class="cv" href="Amira_Gomaa_Full_Stack_Developer_CV.pdf" download (click)="closeMenu()">Download CV</a>
+    <a class="cv" href="Amira_Gomaa_Full_Stack_Developer_CV.pdf" download (click)="closeMenu()">
+      {{ i18n.t().downloadCv }}
+    </a>
   </nav>
 </header>

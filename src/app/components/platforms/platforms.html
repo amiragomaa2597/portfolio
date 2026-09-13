@@ -1,0 +1,24 @@
+<section class="section platforms" id="platforms">
+  <div class="section-inner">
+    <div appReveal>
+      <p class="eyebrow">{{ i18n.t().platforms.eyebrow }}</p>
+      <h2>{{ i18n.t().platforms.title }}</h2>
+      <p class="prose">{{ i18n.t().platforms.lead }}</p>
+    </div>
+
+    <div class="cards">
+      @for (card of i18n.t().platforms.cards; track card.title; let i = $index) {
+        <article class="card" appReveal [appRevealDelay]="i * 90">
+          <p class="card-kicker">0{{ i + 1 }}</p>
+          <h3>{{ card.title }}</h3>
+          <p>{{ card.body }}</p>
+          <ul>
+            @for (point of card.points; track point) {
+              <li>{{ point }}</li>
+            }
+          </ul>
+        </article>
+      }
+    </div>
+  </div>
+</section>

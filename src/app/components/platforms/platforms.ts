@@ -3,11 +3,11 @@ import { RevealDirective } from '../../directives/reveal.directive';
 import { LanguageService } from '../../i18n/language.service';
 
 @Component({
-  selector: 'app-experience',
+  selector: 'app-platforms',
   imports: [RevealDirective],
-  templateUrl: './experience.html',
-  styleUrl: './experience.scss',
+  templateUrl: './platforms.html',
+  styleUrl: './platforms.scss',
 })
-export class Experience {
+export class Platforms {
   readonly i18n = inject(LanguageService);
 }

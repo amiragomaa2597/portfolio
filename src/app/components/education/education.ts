@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RevealDirective } from '../../directives/reveal.directive';
-import { EDUCATION } from '../../data/portfolio.data';
+import { LanguageService } from '../../i18n/language.service';
 
 @Component({
   selector: 'app-education',
@@ -9,5 +9,5 @@ import { EDUCATION } from '../../data/portfolio.data';
   styleUrl: './education.scss',
 })
 export class Education {
-  readonly items = EDUCATION;
+  readonly i18n = inject(LanguageService);
 }

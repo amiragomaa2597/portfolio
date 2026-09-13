@@ -1,19 +1,19 @@
 <section class="section contact" id="contact">
   <div class="section-inner">
     <div class="intro" appReveal>
-      <p class="eyebrow">Contact</p>
-      <h2>Let’s build something solid</h2>
-      <p class="prose">Every channel below is clickable — pick whatever is easiest.</p>
+      <p class="eyebrow">{{ i18n.t().contact.eyebrow }}</p>
+      <h2>{{ i18n.t().contact.title }}</h2>
+      <p class="prose">{{ i18n.t().contact.lead }}</p>
     </div>
 
     <div class="grid">
-      @for (item of channels; track item.label; let i = $index) {
+      @for (item of i18n.t().contact.channels; track item.icon; let i = $index) {
         <a
           class="channel"
           [href]="item.href"
           [attr.target]="item.external ? '_blank' : null"
           [attr.rel]="item.external ? 'noopener noreferrer' : null"
-          [attr.download]="item.label === 'Resume' ? true : null"
+          [attr.download]="item.icon === 'cv' ? true : null"
           appReveal
           [appRevealDelay]="i * 60"
         >

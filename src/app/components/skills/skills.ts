@@ -1,7 +1,8 @@
 import { DecimalPipe } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RevealDirective } from '../../directives/reveal.directive';
 import { SKILLS, techIconUrl } from '../../data/portfolio.data';
+import { LanguageService } from '../../i18n/language.service';
 
 @Component({
   selector: 'app-skills',
@@ -10,6 +11,7 @@ import { SKILLS, techIconUrl } from '../../data/portfolio.data';
   styleUrl: './skills.scss',
 })
 export class Skills {
+  readonly i18n = inject(LanguageService);
   readonly skills = SKILLS;
   readonly iconUrl = techIconUrl;
 }
