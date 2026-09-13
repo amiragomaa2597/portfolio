@@ -14,8 +14,7 @@ export interface ExperienceItem {
   companyUrl: string;
   role: string;
   period: string;
-  logo: string;
-  secondaryLogo?: string;
+  note?: string;
   bullets: string[];
   tags: string[];
 }
@@ -56,12 +55,11 @@ export const SKILLS: SkillGroup[] = [
 
 export const EXPERIENCE: ExperienceItem[] = [
   {
-    company: 'Bussma Solutions (Jadara ERP)',
+    company: 'Bussma Solutions',
     companyUrl: 'https://bussmasolutions.com/en',
     role: 'Full Stack Developer',
     period: 'Mar 2025 – Present',
-    logo: 'assets/logos/bussma.jpg',
-    secondaryLogo: 'assets/logos/jadara.png',
+    note: 'Also known as Jadara in the Saudi market (Jadara ERP).',
     tags: ['.NET', 'Angular', 'Flutter', 'AWS S3', 'Docker', 'Multi-Tenant'],
     bullets: [
       'Contributed to a large-scale ERP platform for the Saudi market.',
@@ -76,7 +74,6 @@ export const EXPERIENCE: ExperienceItem[] = [
     companyUrl: 'https://xlab-group.com/',
     role: 'Full Stack Developer',
     period: '2023 – Feb 2025',
-    logo: 'assets/logos/xlab.png',
     tags: ['Angular', '.NET', 'HR Systems', 'DevExpress', 'Realtime'],
     bullets: [
       'Developed HR management systems for web and mobile platforms.',

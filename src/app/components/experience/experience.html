@@ -8,26 +8,18 @@
     <div class="timeline">
       @for (job of jobs; track job.company; let i = $index) {
         <article class="job" appReveal [appRevealDelay]="i * 90">
-          <div class="logos">
-            <a class="logo-tile" [href]="job.companyUrl" target="_blank" rel="noopener noreferrer">
-              <img [src]="job.logo" [alt]="job.company + ' logo'" />
-            </a>
-            @if (job.secondaryLogo) {
-              <a class="logo-tile secondary" href="https://jadaratech.com/home/index" target="_blank" rel="noopener noreferrer">
-                <img [src]="job.secondaryLogo" alt="Jadara ERP logo" />
-              </a>
+          <div class="meta">
+            <h3>
+              <a [href]="job.companyUrl" target="_blank" rel="noopener noreferrer">{{ job.company }}</a>
+            </h3>
+            @if (job.note) {
+              <p class="note">{{ job.note }}</p>
             }
+            <p class="role">{{ job.role }}</p>
+            <p class="period">{{ job.period }}</p>
           </div>
 
           <div class="body">
-            <div class="meta">
-              <h3>
-                <a [href]="job.companyUrl" target="_blank" rel="noopener noreferrer">{{ job.company }}</a>
-              </h3>
-              <p class="role">{{ job.role }}</p>
-              <p class="period">{{ job.period }}</p>
-            </div>
-
             <ul>
               @for (bullet of job.bullets; track bullet) {
                 <li>{{ bullet }}</li>
