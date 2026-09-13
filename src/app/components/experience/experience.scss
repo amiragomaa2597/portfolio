@@ -27,6 +27,17 @@
   text-decoration: none;
 }
 
+.product {
+  margin: 0.15rem 0 0.45rem;
+  font-size: 0.98rem;
+  color: var(--ink-soft);
+}
+
+.product strong {
+  color: var(--gold-deep);
+  font-weight: 750;
+}
+
 .note {
   margin: 0 0 0.55rem;
   color: var(--gold-deep);

@@ -14,6 +14,7 @@ export interface ExperienceItem {
   companyUrl: string;
   role: string;
   period: string;
+  product?: string;
   note?: string;
   bullets: string[];
   tags: string[];
@@ -60,10 +61,11 @@ export const EXPERIENCE: ExperienceItem[] = [
     companyUrl: 'https://bussmasolutions.com/en',
     role: 'Full Stack Developer',
     period: 'Mar 2025 – Present',
-    note: 'Also known as Jadara in the Saudi market (Jadara ERP).',
+    product: 'Bussma ERP',
+    note: 'Also known as Jadara in the Saudi market.',
     tags: ['.NET', 'Angular', 'Flutter', 'AWS S3', 'Docker', 'Multi-Tenant'],
     bullets: [
-      'Contributed to a large-scale ERP platform for the Saudi market.',
+      'Contributed to Bussma ERP, a large-scale ERP platform for the Saudi market.',
       'Developed Angular web apps and ASP.NET Core backend services.',
       'Implemented Multi-Tenant architecture for multiple clients.',
       'Built Flutter mobile apps and managed App Store / Play Store releases.',
@@ -75,9 +77,10 @@ export const EXPERIENCE: ExperienceItem[] = [
     companyUrl: 'https://xlab-group.com/',
     role: 'Full Stack Developer',
     period: '2023 – Feb 2025',
+    product: 'Vibes',
     tags: ['Angular', '.NET', 'HR Systems', 'DevExpress', 'Realtime'],
     bullets: [
-      'Developed HR management systems for web and mobile platforms.',
+      'Developed Vibes, an HR management system for web and mobile platforms.',
       'Built Angular modules and .NET backend APIs.',
       'Implemented real-time features and system enhancements.',
       'Improved application performance by approximately 20%.',
@@ -89,7 +92,7 @@ export const EXPERIENCE: ExperienceItem[] = [
 export const EDUCATION: EducationItem[] = [
   {
     title: 'ITI Professional Web Development Track',
-    subtitle: 'Information Technology Institute',
+    subtitle: 'Information Technology Institute · 9 months',
     year: '2023',
     url: 'https://iti.gov.eg/',
     logo: 'assets/logos/iti.png',

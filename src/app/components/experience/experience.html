@@ -12,6 +12,9 @@
             <h3>
               <a [href]="job.companyUrl" target="_blank" rel="noopener noreferrer">{{ job.company }}</a>
             </h3>
+            @if (job.product) {
+              <p class="product">Product: <strong>{{ job.product }}</strong></p>
+            }
             @if (job.note) {
               <p class="note">{{ job.note }}</p>
             }
