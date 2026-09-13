@@ -87,7 +87,10 @@ export const SKILLS: SkillGroup[] = [
   {
     title: 'Database',
     accent: '#8a6f14',
-    techs: [{ name: 'SQL Server', slug: 'microsoftsqlserver' }],
+    techs: [
+      { name: 'SQL Server', slug: 'microsoftsqlserver' },
+      { name: 'PostgreSQL', slug: 'postgresql' },
+    ],
   },
   {
     title: 'Architecture',
