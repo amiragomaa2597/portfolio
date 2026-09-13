@@ -1,8 +1,8 @@
 .contact {
   background:
-    radial-gradient(600px 280px at 15% 20%, rgba(201, 162, 39, 0.18), transparent 55%),
-    linear-gradient(145deg, #15130f 0%, #241e14 55%, #12100d 100%);
-  color: #fff8ea;
+    radial-gradient(600px 280px at 15% 20%, rgba(255, 255, 255, 0.1), transparent 55%),
+    linear-gradient(145deg, #121212 0%, #1c1c1c 55%, #0f0f0f 100%);
+  color: #f7f7f5;
 }
 
 .contact .eyebrow {
@@ -27,7 +27,7 @@
   padding: 1.1rem 1.15rem;
   border-radius: 1rem;
   text-decoration: none;
-  border: 1px solid rgba(224, 188, 69, 0.28);
+  border: 1px solid rgba(255, 255, 255, 0.28);
   background: rgba(255, 255, 255, 0.04);
   transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
 }
@@ -35,7 +35,7 @@
 .channel:hover {
   transform: translateY(-4px);
   border-color: var(--gold-bright);
-  background: rgba(201, 162, 39, 0.12);
+  background: rgba(255, 255, 255, 0.12);
   color: #fff8ea;
 }
 

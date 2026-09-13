@@ -53,7 +53,7 @@ export const NAV_LINKS: NavLink[] = [
 export const SKILLS: SkillGroup[] = [
   {
     title: 'Backend',
-    accent: '#c9a227',
+    accent: '#2a2723',
     techs: [
       { name: '.NET', slug: 'dotnet' },
       { name: 'C#', slug: 'csharp' },
@@ -64,7 +64,7 @@ export const SKILLS: SkillGroup[] = [
   },
   {
     title: 'Frontend',
-    accent: '#a8891d',
+    accent: '#3f3c38',
     techs: [
       { name: 'Angular', slug: 'angular' },
       { name: 'TypeScript', slug: 'typescript' },
@@ -76,7 +76,7 @@ export const SKILLS: SkillGroup[] = [
   },
   {
     title: 'Mobile',
-    accent: '#e0bc45',
+    accent: '#5c574f',
     techs: [
       { name: 'Flutter', slug: 'flutter' },
       { name: 'Android', slug: 'android' },
@@ -85,7 +85,7 @@ export const SKILLS: SkillGroup[] = [
   },
   {
     title: 'Database',
-    accent: '#8a6f14',
+    accent: '#12110f',
     techs: [
       { name: 'SQL Server', slug: 'microsoftsqlserver' },
       { name: 'PostgreSQL', slug: 'postgresql' },
@@ -93,7 +93,7 @@ export const SKILLS: SkillGroup[] = [
   },
   {
     title: 'Architecture',
-    accent: '#b9972a',
+    accent: '#4a4640',
     techs: [
       { name: 'Modular Monolith', slug: 'architecture' },
       { name: 'N-Tiers', slug: 'architecture' },
@@ -101,7 +101,7 @@ export const SKILLS: SkillGroup[] = [
   },
   {
     title: 'Multi-Tenant & SaaS',
-    accent: '#c4a035',
+    accent: '#6b665e',
     techs: [
       { name: 'Multi-Tenant', slug: 'architecture' },
       { name: 'SaaS', slug: 'architecture' },
@@ -109,7 +109,7 @@ export const SKILLS: SkillGroup[] = [
   },
   {
     title: 'DevOps & Cloud',
-    accent: '#d4af37',
+    accent: '#2f2c28',
     techs: [
       { name: 'Docker', slug: 'docker' },
       { name: 'AWS S3', slug: 'amazonaws' },
@@ -119,7 +119,7 @@ export const SKILLS: SkillGroup[] = [
   },
   {
     title: 'Methodologies',
-    accent: '#9a7b1a',
+    accent: '#555049',
     techs: [{ name: 'Agile Scrum', slug: 'scrumalliance' }],
   },
 ];
