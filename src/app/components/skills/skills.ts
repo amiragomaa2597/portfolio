@@ -14,4 +14,13 @@ export class Skills {
   readonly i18n = inject(LanguageService);
   readonly skills = SKILLS;
   readonly iconUrl = techIconUrl;
+
+  onIconError(event: Event): void {
+    const img = event.target as HTMLImageElement;
+    img.style.display = 'none';
+    const fallback = img.nextElementSibling as HTMLElement | null;
+    if (fallback?.classList.contains('fallback')) {
+      fallback.hidden = false;
+    }
+  }
 }

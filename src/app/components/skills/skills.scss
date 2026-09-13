@@ -82,6 +82,9 @@
   flex: 0 0 auto;
 }
 
+.tech img {
+  filter: none;
+}
 .fallback {
   display: grid;
   place-items: center;

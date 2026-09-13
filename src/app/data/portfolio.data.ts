@@ -71,7 +71,7 @@ export const SKILLS: SkillGroup[] = [
       { name: 'TypeScript', slug: 'typescript' },
       { name: 'JavaScript', slug: 'javascript' },
       { name: 'HTML5', slug: 'html5' },
-      { name: 'CSS3', slug: 'css' },
+      { name: 'CSS3', slug: 'css3' },
       { name: 'Tailwind', slug: 'tailwindcss' },
     ],
   },
@@ -215,10 +215,10 @@ export const SOCIAL_QUICK: ContactChannel[] = CONTACTS.filter((c) =>
   ['whatsapp', 'linkedin', 'github', 'email', 'phone'].includes(c.icon),
 );
 
-/** Simple Icons CDN helper */
+/** Reliable Simple Icons via jsDelivr */
 export function techIconUrl(slug: string): string {
   if (slug === 'architecture') {
     return '';
   }
-  return `https://cdn.simpleicons.org/${slug}`;
+  return `https://cdn.jsdelivr.net/npm/simple-icons@11/icons/${slug}.svg`;
 }
