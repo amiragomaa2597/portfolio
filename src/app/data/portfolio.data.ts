@@ -100,7 +100,7 @@ export const EDUCATION: EducationItem[] = [
   },
   {
     title: 'Alexandria University',
-    subtitle: 'Faculty of Engineering — Communications',
+    subtitle: 'Bachelor’s degree · Faculty of Engineering — Communications · Grade: Very Good',
     year: 'Engineering',
     url: 'https://eng.alexu.edu.eg/index.php/en',
     logo: 'assets/logos/alexu.png',
