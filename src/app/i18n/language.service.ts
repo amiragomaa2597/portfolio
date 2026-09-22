@@ -219,8 +219,8 @@ const EN: UiCopy = {
     view: 'View credential',
     items: [
       {
-        title: 'Udemy Certificate',
-        subtitle: 'Verified course completion',
+        title: 'Mastering MS Power Apps',
+        subtitle: 'Udemy · Verified course completion',
         image: 'assets/certificates/udemy-certificate.jpg',
         href: 'https://www.udemy.com/certificate/UC-5c2de856-641f-43d1-94f1-a43cf449afc8/',
       },
@@ -400,8 +400,8 @@ const AR: UiCopy = {
     view: 'عرض الشهادة',
     items: [
       {
-        title: 'شهادة Udemy',
-        subtitle: 'إتمام دورة معتمد',
+        title: 'إتقان Microsoft Power Apps',
+        subtitle: 'Udemy · إتمام دورة معتمد',
         image: 'assets/certificates/udemy-certificate.jpg',
         href: 'https://www.udemy.com/certificate/UC-5c2de856-641f-43d1-94f1-a43cf449afc8/',
       },
