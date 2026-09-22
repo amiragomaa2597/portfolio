@@ -10,6 +10,7 @@ export interface UiCopy {
     skills: string;
     experience: string;
     education: string;
+    certificates: string;
     contact: string;
   };
   downloadCv: string;
@@ -66,6 +67,18 @@ export interface UiCopy {
       logoClass?: string;
     }>;
   };
+  certificates: {
+    eyebrow: string;
+    title: string;
+    lead: string;
+    view: string;
+    items: Array<{
+      title: string;
+      subtitle?: string;
+      image: string;
+      href: string;
+    }>;
+  };
   contact: {
     eyebrow: string;
     title: string;
@@ -91,6 +104,7 @@ const EN: UiCopy = {
     skills: 'Skills',
     experience: 'Experience',
     education: 'Education',
+    certificates: 'Certificates',
     contact: 'Contact',
   },
   downloadCv: 'Download CV',
@@ -198,6 +212,20 @@ const EN: UiCopy = {
       },
     ],
   },
+  certificates: {
+    eyebrow: 'Certificates',
+    title: 'Credentials that back the craft',
+    lead: 'Click any certificate to open the linked credential.',
+    view: 'View credential',
+    items: [
+      {
+        title: 'Udemy Certificate',
+        subtitle: 'Verified course completion',
+        image: 'assets/certificates/udemy-certificate.jpg',
+        href: 'https://lnkd.in/e4kqbQzm',
+      },
+    ],
+  },
   contact: {
     eyebrow: 'Contact',
     title: 'Let’s build something solid',
@@ -257,6 +285,7 @@ const AR: UiCopy = {
     skills: 'المهارات',
     experience: 'الخبرة',
     education: 'التعليم',
+    certificates: 'الشهادات',
     contact: 'تواصل',
   },
   downloadCv: 'تحميل السيرة',
@@ -361,6 +390,20 @@ const AR: UiCopy = {
         year: 'هندسة',
         url: 'https://eng.alexu.edu.eg/index.php/en',
         logo: 'assets/logos/alexu.png',
+      },
+    ],
+  },
+  certificates: {
+    eyebrow: 'الشهادات',
+    title: 'شهادات تدعم المسيرة',
+    lead: 'اضغطي على أي شهادة لفتح الرابط المرتبط بها.',
+    view: 'عرض الشهادة',
+    items: [
+      {
+        title: 'شهادة Udemy',
+        subtitle: 'إتمام دورة معتمد',
+        image: 'assets/certificates/udemy-certificate.jpg',
+        href: 'https://lnkd.in/e4kqbQzm',
       },
     ],
   },

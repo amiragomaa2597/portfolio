@@ -1,0 +1,33 @@
+<section class="section certificates" id="certificates">
+  <div class="section-inner">
+    <div appReveal>
+      <p class="eyebrow">{{ i18n.t().certificates.eyebrow }}</p>
+      <h2>{{ i18n.t().certificates.title }}</h2>
+      <p class="prose">{{ i18n.t().certificates.lead }}</p>
+    </div>
+
+    <div class="cert-grid">
+      @for (item of i18n.t().certificates.items; track item.href; let i = $index) {
+        <a
+          class="cert-card"
+          [href]="item.href"
+          target="_blank"
+          rel="noopener noreferrer"
+          appReveal
+          [appRevealDelay]="i * 90"
+        >
+          <div class="cert-media">
+            <img [src]="item.image" [alt]="item.title" loading="lazy" />
+          </div>
+          <div class="cert-body">
+            <h3>{{ item.title }}</h3>
+            @if (item.subtitle) {
+              <p>{{ item.subtitle }}</p>
+            }
+            <span class="cert-cta">{{ i18n.t().certificates.view }}</span>
+          </div>
+        </a>
+      }
+    </div>
+  </div>
+</section>

@@ -58,6 +58,11 @@
           "configurations": {
             "production": {
               "baseHref": "/portfolio/",
+              "optimization": {
+                "scripts": true,
+                "styles": true,
+                "fonts": false
+              },
               "budgets": [
                 {
                   "type": "initial",

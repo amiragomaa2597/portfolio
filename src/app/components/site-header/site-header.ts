@@ -22,6 +22,7 @@ export class SiteHeader {
     { key: 'skills' as const, href: '#skills' },
     { key: 'experience' as const, href: '#experience' },
     { key: 'education' as const, href: '#education' },
+    { key: 'certificates' as const, href: '#certificates' },
     { key: 'contact' as const, href: '#contact' },
   ];
 
