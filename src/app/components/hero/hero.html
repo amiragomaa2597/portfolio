@@ -15,12 +15,17 @@
       <p class="lead">{{ i18n.t().hero.lead }}</p>
 
       <div class="actions">
-        <a class="btn gold" href="https://wa.me/201096825528" target="_blank" rel="noopener noreferrer">
+        <a
+          class="btn gold"
+          href="https://wa.me/201096825528"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           <app-social-icon name="whatsapp" label="WhatsApp" />
           {{ i18n.t().hero.whatsapp }}
         </a>
         <a class="btn ghost" href="#experience">{{ i18n.t().hero.seeExperience }}</a>
-        <a class="btn ghost" href="Amira_Gomaa_Full_Stack_Developer_CV.pdf" download>
+        <a class="btn ghost" [href]="cvHref" download>
           <app-social-icon name="cv" label="CV" />
           {{ i18n.t().hero.downloadCv }}
         </a>
@@ -50,7 +55,7 @@
         }
       </ul>
       <div class="panel-stat">
-        <strong>3+</strong>
+        <strong>{{ i18n.t().hero.yearsValue }}</strong>
         <span>{{ i18n.t().hero.yearsLabel }}</span>
       </div>
     </aside>
