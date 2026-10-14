@@ -184,8 +184,8 @@ export const PROFILE = {
     'أصمم وأبني منتجات ويب وموبايل قابلة للتوسع باستخدام .NET وAngular وFlutter — من منصات ERP متعددة المستأجرين إلى إصدارات متاجر التطبيقات.',
   ),
   summary: text(
-    'Full Stack Developer with over 3 years of experience designing and delivering scalable web and mobile applications using .NET, Angular, Flutter, and SQL Server. Experienced in ERP and HR solutions, RESTful APIs, Multi-Tenant SaaS platforms, AWS integrations, and mobile application deployment.',
-    'مطورة برمجيات كاملة بخبرة أكثر من 3 سنوات في تصميم وتطوير تطبيقات ويب وموبايل قابلة للتوسع باستخدام .NET وAngular وFlutter وSQL Server. خبرة في حلول ERP وHR وواجهات REST ومنصات SaaS متعددة المستأجرين وتكاملات AWS ونشر تطبيقات الموبايل.',
+    '.NET / full-stack developer with 3+ years of experience designing and delivering scalable web and mobile applications using .NET, Angular, Flutter, and SQL Server. Experienced in ERP and HR solutions, RESTful APIs, Multi-Tenant SaaS platforms, AWS integrations, and mobile application deployment. Targeting remote roles.',
+    'مطورة .NET وبرمجيات كاملة بخبرة 3+ سنوات في تصميم وتطوير تطبيقات ويب وموبايل قابلة للتوسع باستخدام .NET وAngular وFlutter وSQL Server. خبرة في حلول ERP وHR وواجهات REST ومنصات SaaS متعددة المستأجرين وتكاملات AWS ونشر تطبيقات الموبايل. أستهدف فرص العمل عن بُعد.',
   ),
   focusItems: {
     en: ['.NET APIs', 'Angular apps', 'Flutter mobile', 'Multi-tenant SaaS'],
@@ -519,9 +519,10 @@ export function localizedPortfolio(lang: 'en' | 'ar'): LocalizedPortfolio {
 const CV_CONTACT_ORDER = ['email', 'phone', 'whatsapp', 'linkedin', 'github'] as const;
 
 /**
- * Header technologies for a .NET / full-stack CV.
+ * Header technologies for a .NET / full-stack CV aimed at remote roles.
  * C#, Entity Framework, REST APIs, and Angular are skill chips.
  * ASP.NET Core is named in the Bussma experience bullets (the chip says ASP.NET).
+ * "Remote" is the owner's target, not a skill chip.
  */
 const CV_HEADLINE_PARTS = [
   'C#',
@@ -567,7 +568,7 @@ export function buildCvDocument(): CvDocument {
   return {
     fileName: CV_FILENAME,
     fullName: PROFILE.fullName,
-    headline: `${PROFILE.title.en} | ${CV_HEADLINE_PARTS.join(', ')}`,
+    headline: `${PROFILE.title.en} | Remote | ${CV_HEADLINE_PARTS.join(', ')}`,
     contacts,
     summary: PROFILE.summary.en,
     skills: SKILLS.map((group) => ({
