@@ -3,6 +3,11 @@
   "version": "1.0.0",
   "scripts": {
     "ng": "ng",
+    "generate:cv": "tsx scripts/generate-cv.ts",
+    "verify:cv": "tsx scripts/verify-cv.ts",
+    "prestart": "npm run generate:cv",
+    "prebuild": "npm run generate:cv && npm run verify:cv",
+    "prewatch": "npm run generate:cv",
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
@@ -24,7 +29,10 @@
     "@angular/build": "^22.1.8",
     "@angular/cli": "^22.1.8",
     "@angular/compiler-cli": "^22.1.0",
+    "@types/pdfkit": "^0.17.6",
+    "pdfkit": "^0.20.2",
     "prettier": "^3.8.1",
+    "tsx": "^4.23.15",
     "typescript": "~6.0.2"
   }
 }

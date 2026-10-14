@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { SOCIAL_QUICK } from '../../data/portfolio.data';
+import { CV_FILENAME, SOCIAL_QUICK } from '../../data/portfolio.data';
 import { LanguageService } from '../../i18n/language.service';
 import { SocialIcon } from '../social-icon/social-icon';
 
@@ -12,4 +12,5 @@ import { SocialIcon } from '../social-icon/social-icon';
 export class Hero {
   readonly i18n = inject(LanguageService);
   readonly socials = SOCIAL_QUICK;
+  readonly cvHref = CV_FILENAME;
 }

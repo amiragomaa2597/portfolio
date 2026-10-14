@@ -13,7 +13,7 @@
           [href]="item.href"
           [attr.target]="item.external ? '_blank' : null"
           [attr.rel]="item.external ? 'noopener noreferrer' : null"
-          [attr.download]="item.icon === 'cv' ? true : null"
+          [attr.download]="item.downloadName || null"
           appReveal
           [appRevealDelay]="i * 60"
         >

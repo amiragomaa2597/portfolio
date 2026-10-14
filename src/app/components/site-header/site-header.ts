@@ -1,5 +1,5 @@
 import { Component, HostListener, inject, signal } from '@angular/core';
-import { SOCIAL_QUICK } from '../../data/portfolio.data';
+import { CV_FILENAME, SOCIAL_QUICK } from '../../data/portfolio.data';
 import { LanguageService } from '../../i18n/language.service';
 import { SocialIcon } from '../social-icon/social-icon';
 
@@ -11,6 +11,7 @@ import { SocialIcon } from '../social-icon/social-icon';
 })
 export class SiteHeader {
   readonly i18n = inject(LanguageService);
+  readonly cvHref = CV_FILENAME;
   readonly socials = SOCIAL_QUICK.filter((s) =>
     ['whatsapp', 'linkedin', 'github'].includes(s.icon),
   );
