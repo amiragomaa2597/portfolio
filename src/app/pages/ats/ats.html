@@ -4,12 +4,27 @@
     <h2>{{ copy().title }}</h2>
     <p class="prose">{{ copy().lead }}</p>
 
+    <label class="key">
+      <span>{{ copy().apiKey }}</span>
+      <input
+        type="password"
+        autocomplete="off"
+        [value]="apiKey()"
+        [attr.placeholder]="copy().apiKey"
+        (input)="setKey($event)"
+      />
+      <small>{{ copy().apiHint }}</small>
+    </label>
+
     <label class="post">
       <textarea [value]="jobPost()" [attr.placeholder]="copy().placeholder" (input)="setJob($event)"></textarea>
     </label>
     <div class="toolbar">
-      <button type="button" class="gold" (click)="build()">{{ copy().build }}</button>
-      @if (result(); as ready) {
+      <button type="button" class="gold" [disabled]="busy()" (click)="buildWithAi()">
+        {{ busy() ? copy().busy : copy().buildAi }}
+      </button>
+      <button type="button" [disabled]="busy()" (click)="buildLocal()">{{ copy().buildLocal }}</button>
+      @if (draft()) {
         <button type="button" (click)="download()">{{ copy().download }}</button>
       }
     </div>
@@ -17,21 +32,21 @@
       <p class="warn">{{ error() }}</p>
     }
 
-    @if (result(); as ready) {
+    @if (draft(); as ready) {
       <div class="report">
         <div>
           <h3>{{ copy().matched }}</h3>
           <ul>
-            @for (term of ready.matched; track term) {
+            @for (term of matched(); track term) {
               <li>{{ term }}</li>
             }
           </ul>
         </div>
         <div>
           <h3>{{ copy().missing }}</h3>
-          @if (ready.missing.length) {
+          @if (missing().length) {
             <ul>
-              @for (term of ready.missing; track term) {
+              @for (term of missing(); track term) {
                 <li>{{ term }}</li>
               }
             </ul>
@@ -41,42 +56,134 @@
         </div>
       </div>
 
-      <article class="sheet">
-        <h3 class="name">{{ ready.cv.fullName }}</h3>
-        <p>{{ ready.cv.headline }}</p>
-        @for (contact of ready.cv.contacts; track contact.label) {
-          <p><strong>{{ contact.label }}:</strong> {{ contact.value }}</p>
+      <p class="edit-lead">{{ copy().edit }}</p>
+      <article class="sheet editor">
+        <label>
+          Name
+          <input [value]="ready.fullName" (input)="patch((cv) => (cv.fullName = text($event)))" />
+        </label>
+        <label>
+          Headline
+          <input [value]="ready.headline" (input)="patch((cv) => (cv.headline = text($event)))" />
+        </label>
+
+        @for (contact of ready.contacts; track contact.label; let i = $index) {
+          <div class="row">
+            <label>
+              {{ contact.label }}
+              <input
+                [value]="contact.value"
+                (input)="patch((cv) => (cv.contacts[i].value = text($event)))"
+              />
+            </label>
+            <label>
+              Link
+              <input
+                [value]="contact.href ?? ''"
+                (input)="patch((cv) => (cv.contacts[i].href = text($event) || undefined))"
+              />
+            </label>
+          </div>
         }
+
         <h4>{{ headings[0] }}</h4>
-        <p>{{ ready.cv.summary }}</p>
+        <label>
+          Summary
+          <textarea [value]="ready.summary" (input)="patch((cv) => (cv.summary = text($event)))"></textarea>
+        </label>
+
         <h4>{{ headings[1] }}</h4>
-        @for (group of ready.cv.skills; track group.title) {
-          <p><strong>{{ group.title }}:</strong> {{ group.items.join(', ') }}</p>
+        @for (group of ready.skills; track group.title; let i = $index) {
+          <label>
+            {{ group.title }}
+            <input
+              [value]="group.items.join(', ')"
+              (change)="patch((cv) => setSkills(cv.skills[i], text($event)))"
+            />
+          </label>
         }
+
         <h4>{{ headings[2] }}</h4>
-        @for (job of ready.cv.experience; track job.company) {
-          <p class="role">{{ job.role }}</p>
-          <p>{{ job.company }} | {{ job.period }}</p>
-          @if (job.product) {
-            <p>{{ job.product }}</p>
-          }
-          <ul>
-            @for (bullet of job.bullets; track bullet) {
-              <li>{{ bullet }}</li>
-            }
-          </ul>
+        @for (job of ready.experience; track job.company; let i = $index) {
+          <div class="block">
+            <label>
+              Role
+              <input [value]="job.role" (input)="patch((cv) => (cv.experience[i].role = text($event)))" />
+            </label>
+            <div class="row">
+              <label>
+                Company
+                <input [value]="job.company" (input)="patch((cv) => (cv.experience[i].company = text($event)))" />
+              </label>
+              <label>
+                Period
+                <input [value]="job.period" (input)="patch((cv) => (cv.experience[i].period = text($event)))" />
+              </label>
+            </div>
+            <label>
+              Company link
+              <input
+                [value]="job.companyUrl"
+                (input)="patch((cv) => (cv.experience[i].companyUrl = text($event)))"
+              />
+            </label>
+            <label>
+              Product
+              <input
+                [value]="job.product ?? ''"
+                (input)="patch((cv) => (cv.experience[i].product = text($event) || undefined))"
+              />
+            </label>
+            <label>
+              Bullets
+              <textarea
+                [value]="job.bullets.join('\n')"
+                (change)="patch((cv) => setBullets(cv.experience[i], text($event)))"
+              ></textarea>
+            </label>
+          </div>
         }
+
         <h4>{{ headings[3] }}</h4>
-        @for (project of ready.cv.projects; track project.name) {
-          <p class="role">{{ project.name }}</p>
-          <p>{{ project.company }} | {{ project.period }}</p>
-          <p>{{ project.summary }}</p>
-          <p><strong>Technologies:</strong> {{ project.tags.join(', ') }}</p>
+        @for (project of ready.projects; track project.name; let i = $index) {
+          <div class="block">
+            <label>
+              Project
+              <input [value]="project.name" (input)="patch((cv) => (cv.projects[i].name = text($event)))" />
+            </label>
+            <label>
+              Summary
+              <textarea
+                [value]="project.summary"
+                (input)="patch((cv) => (cv.projects[i].summary = text($event)))"
+              ></textarea>
+            </label>
+            <label>
+              Technologies
+              <input
+                [value]="project.tags.join(', ')"
+                (change)="patch((cv) => setTags(cv.projects[i], text($event)))"
+              />
+            </label>
+          </div>
         }
+
         <h4>{{ headings[4] }}</h4>
-        @for (item of ready.cv.education; track item.title) {
-          <p class="role">{{ item.title }}</p>
-          <p>{{ item.detail }}</p>
+        @for (item of ready.education; track item.title; let i = $index) {
+          <div class="block">
+            <label>
+              Title
+              <input [value]="item.title" (input)="patch((cv) => (cv.education[i].title = text($event)))" />
+            </label>
+            <label>
+              Detail
+              <input [value]="item.detail" (input)="patch((cv) => (cv.education[i].detail = text($event)))" />
+            </label>
+            <label>
+              Link
+              <input [value]="item.url" (input)="patch((cv) => (cv.education[i].url = text($event)))" />
+            </label>
+          </div>
         }
       </article>
     }

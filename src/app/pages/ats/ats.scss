@@ -1,17 +1,39 @@
 h2 {
-  max-width: 16ch;
+  max-width: 18ch;
 }
 
-.post textarea {
+.key,
+.post {
+  display: grid;
+  gap: 0.35rem;
+  margin-top: 1.1rem;
+}
+
+.key span,
+.edit-lead {
+  font-weight: 700;
+  color: var(--ink-soft);
+}
+
+.key small {
+  color: var(--muted);
+}
+
+.key input,
+.post textarea,
+.sheet input,
+.sheet textarea {
   width: 100%;
-  min-height: 12rem;
-  margin-top: 1.25rem;
   border: 1px solid rgba(18, 17, 15, 0.14);
-  border-radius: 1rem;
-  padding: 0.9rem 1rem;
+  border-radius: 0.9rem;
+  padding: 0.75rem 0.9rem;
   font: inherit;
   color: var(--ink);
   background: rgba(255, 255, 255, 0.85);
+}
+
+.post textarea {
+  min-height: 12rem;
   resize: vertical;
 }
 
@@ -39,9 +61,15 @@ button.gold {
   border-color: var(--ink);
 }
 
+button:disabled {
+  opacity: 0.55;
+  cursor: wait;
+}
+
 .warn {
   color: var(--gold-deep);
   font-weight: 700;
+  white-space: pre-wrap;
 }
 
 .report {
@@ -66,8 +94,12 @@ button.gold {
   background: rgba(255, 255, 255, 0.55);
 }
 
+.edit-lead {
+  margin: 1.4rem 0 0.6rem;
+}
+
 .sheet {
-  margin-top: 1.5rem;
+  margin-top: 0.4rem;
   padding: 1.5rem 1.4rem;
   border-radius: 1.2rem;
   background: #fff;
@@ -75,18 +107,42 @@ button.gold {
   border: 1px solid rgba(18, 17, 15, 0.08);
 }
 
-.sheet .name,
-.sheet .role {
-  font-weight: 700;
+.editor {
+  display: grid;
+  gap: 0.8rem;
 }
 
-.sheet p,
-.sheet li {
-  margin: 0.2rem 0;
+.editor label {
+  display: grid;
+  gap: 0.3rem;
+  font-size: 0.86rem;
+  font-weight: 700;
+  color: var(--muted);
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.7rem;
+}
+
+.block {
+  display: grid;
+  gap: 0.65rem;
+  padding: 0.9rem;
+  border-radius: 1rem;
+  border: 1px solid rgba(18, 17, 15, 0.08);
+  background: rgba(250, 246, 238, 0.55);
+}
+
+.sheet textarea {
+  min-height: 5rem;
+  resize: vertical;
 }
 
 @media (max-width: 760px) {
-  .report {
+  .report,
+  .row {
     grid-template-columns: 1fr;
   }
 }

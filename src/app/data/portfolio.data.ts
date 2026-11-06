@@ -159,6 +159,8 @@ export interface PortfolioContent {
 export interface CvContactLine {
   label: string;
   value: string;
+  /** Clickable target in the PDF and preview. */
+  href?: string;
 }
 
 export interface CvSkillLine {
@@ -685,7 +687,7 @@ export function buildCvDocument(content = publishedContent(), strict = true): Cv
       return [];
     }
     const value = icon === 'linkedin' || icon === 'github' ? channel.href : channel.value;
-    return [{ label: channel.label, value }];
+    return [{ label: channel.label, value, href: channel.href }];
   });
 
   return {

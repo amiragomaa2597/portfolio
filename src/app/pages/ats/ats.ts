@@ -1,7 +1,14 @@
 import { Component, computed, inject, signal } from '@angular/core';
-import { tailorCv, type AtsResult } from '../../ats/match-job';
+import { generateCvWithAi, readOpenAiKey, writeOpenAiKey } from '../../ats/ai-cv';
+import { tailorCv } from '../../ats/match-job';
 import { downloadCvPdf } from '../../cv/download-cv';
-import { CV_HEADINGS } from '../../data/portfolio.data';
+import {
+  CV_HEADINGS,
+  type CvDocument,
+  type CvExperience,
+  type CvProject,
+  type CvSkillLine,
+} from '../../data/portfolio.data';
 import { LanguageService } from '../../i18n/language.service';
 import { ContentStore } from '../../state/content.store';
 
@@ -16,55 +23,141 @@ export class AtsPage {
   readonly headings = CV_HEADINGS;
   readonly copy = computed(() => (this.i18n.lang() === 'ar' ? AR : EN));
   readonly jobPost = signal('');
-  readonly result = signal<AtsResult | null>(null);
+  readonly apiKey = signal(readOpenAiKey());
+  readonly draft = signal<CvDocument | null>(null);
+  readonly matched = signal<string[]>([]);
+  readonly missing = signal<string[]>([]);
   readonly error = signal('');
+  readonly busy = signal(false);
 
   setJob(event: Event): void {
     this.jobPost.set((event.target as HTMLTextAreaElement).value);
   }
 
-  build(): void {
+  setKey(event: Event): void {
+    const value = (event.target as HTMLInputElement).value;
+    this.apiKey.set(value);
+    writeOpenAiKey(value);
+  }
+
+  text(event: Event): string {
+    return (event.target as HTMLInputElement | HTMLTextAreaElement).value;
+  }
+
+  patch(mutator: (cv: CvDocument) => void): void {
+    const current = this.draft();
+    if (!current) {
+      return;
+    }
+    const next = structuredClone(current);
+    mutator(next);
+    this.draft.set(next);
+  }
+
+  setSkills(group: CvSkillLine, value: string): void {
+    group.items = value
+      .split(',')
+      .map((item) => item.trim())
+      .filter(Boolean);
+  }
+
+  setBullets(job: CvExperience, value: string): void {
+    job.bullets = value
+      .split('\n')
+      .map((item) => item.trim())
+      .filter(Boolean);
+  }
+
+  setTags(project: CvProject, value: string): void {
+    project.tags = value
+      .split(',')
+      .map((item) => item.trim())
+      .filter(Boolean);
+  }
+
+  async buildWithAi(): Promise<void> {
+    const post = this.jobPost().trim();
+    const key = this.apiKey().trim();
+    if (!post) {
+      this.error.set(this.copy().empty);
+      return;
+    }
+    if (!key) {
+      this.error.set(this.copy().needKey);
+      return;
+    }
+    this.busy.set(true);
+    this.error.set('');
+    try {
+      const result = await generateCvWithAi(this.content.content(), post, key);
+      this.draft.set(result.cv);
+      this.matched.set(result.matched);
+      this.missing.set(result.missing);
+    } catch (error) {
+      this.error.set(error instanceof Error ? error.message : this.copy().aiFailed);
+    } finally {
+      this.busy.set(false);
+    }
+  }
+
+  buildLocal(): void {
     const post = this.jobPost().trim();
     if (!post) {
-      this.result.set(null);
       this.error.set(this.copy().empty);
       return;
     }
     this.error.set('');
-    this.result.set(tailorCv(this.content.content(), post));
+    const result = tailorCv(this.content.content(), post);
+    this.draft.set(result.cv);
+    this.matched.set(result.matched);
+    this.missing.set(result.missing);
   }
 
   download(): void {
-    const current = this.result();
+    const current = this.draft();
     if (!current) {
       return;
     }
-    void downloadCvPdf({ ...current.cv, fileName: 'Amira_Gomaa_ATS.pdf' });
+    void downloadCvPdf({ ...current, fileName: 'Amira_Gomaa_ATS.pdf' });
   }
 }
 
 const EN = {
   eyebrow: 'ATS builder',
   title: 'Shape the CV to the role',
-  lead: 'Paste the job post. The preview uses only facts already in this portfolio, and it leaves out anything you have not done.',
+  lead: 'Paste the job post, generate with AI from your portfolio facts, edit the preview, then download a PDF with clickable links.',
   placeholder: 'Paste the job requirements here',
-  build: 'Preview CV',
+  apiKey: 'OpenAI API key',
+  apiHint: 'Saved only in this browser. Never committed to GitHub.',
+  buildAi: 'Generate with AI',
+  buildLocal: 'Local match only',
   download: 'Download PDF',
   matched: 'Brought forward',
   missing: 'Left out',
   noneMissing: 'Nothing in the post was left out.',
   empty: 'Paste a job post first.',
+  needKey: 'Add your OpenAI API key to generate with AI.',
+  aiFailed: 'AI generation failed.',
+  edit: 'Edit the preview before download',
+  busy: 'Generating…',
 };
 
 const AR = {
   eyebrow: 'بناء السيرة',
   title: 'تهيئة السيرة للوظيفة',
-  lead: 'الصقي إعلان الوظيفة. المعاينة تستخدم فقط ما هو موجود في هذا المعرض، وتترك ما لم تقومي به.',
+  lead: 'الصقي إعلان الوظيفة، وولّدي السيرة بالذكاء الاصطناعي من حقائق معرضك، وعدّلي المعاينة، ثم حمّلي PDF بروابط قابلة للضغط.',
   placeholder: 'الصقي متطلبات الوظيفة هنا',
-  build: 'معاينة السيرة',
+  apiKey: 'مفتاح OpenAI',
+  apiHint: 'يُحفظ في هذا المتصفح فقط. لا يُرفع إلى GitHub.',
+  buildAi: 'توليد بالذكاء الاصطناعي',
+  buildLocal: 'مطابقة محلية فقط',
   download: 'تحميل PDF',
   matched: 'قُدّم في السيرة',
   missing: 'تُرك خارج السيرة',
   noneMissing: 'لا يوجد في الإعلان ما تُرك خارج السيرة.',
   empty: 'الصقي إعلان الوظيفة أولاً.',
+  needKey: 'أضيفي مفتاح OpenAI للتوليد بالذكاء الاصطناعي.',
+  aiFailed: 'فشل التوليد بالذكاء الاصطناعي.',
+  edit: 'عدّلي المعاينة قبل التحميل',
+  busy: 'جارٍ التوليد…',
 };
