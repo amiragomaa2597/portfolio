@@ -11,7 +11,7 @@
       <h2>{{ i18n.t().about.title }}</h2>
       <p class="prose">{{ i18n.t().about.body }}</p>
       <ul class="chips">
-        @for (item of socials; track item.icon) {
+        @for (item of socials(); track item.icon) {
           <li>
             <a
               [href]="item.href"

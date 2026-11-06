@@ -1,11 +1,14 @@
-import { Injectable, computed, effect, signal } from '@angular/core';
+import { Injectable, computed, effect, inject, signal } from '@angular/core';
 import {
   localizedPortfolio,
   type LocalizedCertificate,
   type LocalizedContact,
   type LocalizedEducation,
   type LocalizedJob,
+  type LocalizedProject,
+  type PortfolioContent,
 } from '../data/portfolio.data';
+import { ContentStore } from '../state/content.store';
 
 export type Lang = 'en' | 'ar';
 
@@ -16,6 +19,7 @@ export interface UiCopy {
     about: string;
     skills: string;
     experience: string;
+    projects: string;
     education: string;
     certificates: string;
     contact: string;
@@ -54,6 +58,11 @@ export interface UiCopy {
     product: string;
     jobs: LocalizedJob[];
   };
+  projects: {
+    eyebrow: string;
+    title: string;
+    items: LocalizedProject[];
+  };
   education: {
     eyebrow: string;
     title: string;
@@ -74,6 +83,8 @@ export interface UiCopy {
   };
   footer: {
     backToTop: string;
+    edit: string;
+    ats: string;
   };
 }
 
@@ -87,6 +98,7 @@ interface Chrome {
   about: Omit<UiCopy['about'], 'body'>;
   skills: Omit<UiCopy['skills'], 'groups'>;
   experience: Omit<UiCopy['experience'], 'jobs'>;
+  projects: Omit<UiCopy['projects'], 'items'>;
   education: Omit<UiCopy['education'], 'items'>;
   certificates: Omit<UiCopy['certificates'], 'items'>;
   contact: Omit<UiCopy['contact'], 'channels'>;
@@ -99,6 +111,7 @@ const EN: Chrome = {
     about: 'About',
     skills: 'Skills',
     experience: 'Experience',
+    projects: 'Projects',
     education: 'Education',
     certificates: 'Certificates',
     contact: 'Contact',
@@ -130,6 +143,10 @@ const EN: Chrome = {
     title: 'Where I\u2019ve made an impact',
     product: 'Product',
   },
+  projects: {
+    eyebrow: 'Projects',
+    title: 'Products I have shipped',
+  },
   education: {
     eyebrow: 'Education',
     title: 'Learning that shaped the craft',
@@ -147,6 +164,8 @@ const EN: Chrome = {
   },
   footer: {
     backToTop: 'Back to top',
+    edit: 'Edit',
+    ats: 'ATS',
   },
 };
 
@@ -156,6 +175,7 @@ const AR: Chrome = {
     about: 'نبذة',
     skills: 'المهارات',
     experience: 'الخبرة',
+    projects: 'المشاريع',
     education: 'التعليم',
     certificates: 'الشهادات',
     contact: 'تواصل',
@@ -187,6 +207,10 @@ const AR: Chrome = {
     title: 'أين صنعت أثراً',
     product: 'المنتج',
   },
+  projects: {
+    eyebrow: 'المشاريع',
+    title: 'منتجات بنيتها',
+  },
   education: {
     eyebrow: 'التعليم',
     title: 'تعليم شكّل المسيرة',
@@ -204,14 +228,16 @@ const AR: Chrome = {
   },
   footer: {
     backToTop: 'العودة للأعلى',
+    edit: 'تعديل',
+    ats: 'سيرة ATS',
   },
 };
 
 const CHROME: Record<Lang, Chrome> = { en: EN, ar: AR };
 
-export function copyFor(lang: Lang): UiCopy {
+export function copyFor(lang: Lang, content?: PortfolioContent): UiCopy {
   const chrome = CHROME[lang];
-  const facts = localizedPortfolio(lang);
+  const facts = localizedPortfolio(lang, content);
   return {
     skip: chrome.skip,
     brand: facts.brand,
@@ -238,6 +264,10 @@ export function copyFor(lang: Lang): UiCopy {
       ...chrome.experience,
       jobs: facts.jobs,
     },
+    projects: {
+      ...chrome.projects,
+      items: facts.projects,
+    },
     education: {
       ...chrome.education,
       items: facts.education,
@@ -257,8 +287,9 @@ export function copyFor(lang: Lang): UiCopy {
 @Injectable({ providedIn: 'root' })
 export class LanguageService {
   private readonly storageKey = 'amira-portfolio-lang';
+  private readonly content = inject(ContentStore);
   readonly lang = signal<Lang>(this.readInitial());
-  readonly t = computed(() => copyFor(this.lang()));
+  readonly t = computed(() => copyFor(this.lang(), this.content.content()));
   readonly isRtl = computed(() => this.lang() === 'ar');
 
   constructor() {

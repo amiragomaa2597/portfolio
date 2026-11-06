@@ -1,4 +1,8 @@
 <footer class="site-footer">
   <p>© {{ year }} Amira Gomaa Hassan</p>
-  <a href="#top">{{ i18n.t().footer.backToTop }}</a>
+  <nav class="footer-links">
+    <a routerLink="/edit">{{ i18n.t().footer.edit }}</a>
+    <a routerLink="/ats">{{ i18n.t().footer.ats }}</a>
+    <a routerLink="/" fragment="top">{{ i18n.t().footer.backToTop }}</a>
+  </nav>
 </footer>

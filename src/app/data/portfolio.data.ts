@@ -28,7 +28,11 @@ export interface PortfolioProject {
   /** First experience bullet for this product. Shown on the site and in the CV Projects section. */
   summary: Localized;
   note?: Localized;
+  /** Website-only lines. The static CV keeps the summary and does not repeat these. */
+  features: Localized[];
   tags: string[];
+  /** Company page when one already exists. Omitted when the product has no public URL. */
+  link?: string;
 }
 
 export interface ExperienceItem {
@@ -107,6 +111,16 @@ export interface LocalizedContact {
   downloadName?: string;
 }
 
+export interface LocalizedProject {
+  id: string;
+  name: string;
+  summary: string;
+  note?: string;
+  features: string[];
+  tags: string[];
+  link?: string;
+}
+
 export interface LocalizedPortfolio {
   brand: string;
   title: string;
@@ -115,10 +129,31 @@ export interface LocalizedPortfolio {
   yearsValue: string;
   summary: string;
   skillGroupLabels: Record<string, string>;
+  projects: LocalizedProject[];
   jobs: LocalizedJob[];
   education: LocalizedEducation[];
   certificates: LocalizedCertificate[];
   contacts: LocalizedContact[];
+}
+
+export interface ProfileFacts {
+  fullName: string;
+  brand: Localized;
+  title: Localized;
+  lead: Localized;
+  summary: Localized;
+  focusItems: { en: string[]; ar: string[] };
+  yearsValue: string;
+}
+
+export interface PortfolioContent {
+  profile: ProfileFacts;
+  skills: SkillGroup[];
+  projects: PortfolioProject[];
+  experience: ExperienceItem[];
+  education: EducationItem[];
+  certificates: CertificateItem[];
+  contacts: ContactChannel[];
 }
 
 export interface CvContactLine {
@@ -174,7 +209,7 @@ export const CV_HEADINGS = ['Summary', 'Skills', 'Experience', 'Projects', 'Educ
 
 const text = (en: string, ar: string): Localized => ({ en, ar });
 
-export const PROFILE = {
+export const PROFILE: ProfileFacts = {
   /** README and the page description. The visible brand below stays the shorter name. */
   fullName: 'Amira Gomaa Hassan',
   brand: text('Amira Gomaa', 'أميرة جمعة'),
@@ -288,7 +323,26 @@ export const PROJECTS: PortfolioProject[] = [
       'Also known as Jadara in the Saudi market.',
       'تُعرف أيضاً باسم Jadara في السوق السعودي.',
     ),
+    features: [
+      text(
+        'Developed Angular web apps and ASP.NET Core backend services.',
+        'طورت تطبيقات Angular وخدمات ASP.NET Core.',
+      ),
+      text(
+        'Implemented Multi-Tenant architecture for multiple clients.',
+        'نفذت بنية متعددة المستأجرين لدعم عدة عملاء.',
+      ),
+      text(
+        'Built Flutter mobile apps and managed App Store / Play Store releases.',
+        'بنيت تطبيقات Flutter وأدرت إصدارات App Store وPlay Store.',
+      ),
+      text(
+        'Integrated AWS S3 and participated in Docker deployments.',
+        'دمجت خدمات AWS S3 وشاركت في نشر Docker.',
+      ),
+    ],
     tags: ['.NET', 'Angular', 'Flutter', 'AWS S3', 'Docker', 'Multi-Tenant'],
+    link: 'https://bussmasolutions.com/en',
   },
   {
     id: 'vibes',
@@ -297,6 +351,18 @@ export const PROJECTS: PortfolioProject[] = [
       'Developed Vibes, an HR management system for web and mobile platforms.',
       'طورت Vibes، نظام إدارة موارد بشرية للويب والموبايل.',
     ),
+    features: [
+      text('Built Angular modules and .NET backend APIs.', 'بنيت وحدات Angular وواجهات .NET.'),
+      text(
+        'Implemented real-time features and system enhancements.',
+        'نفذت ميزات فورية وتحسينات للنظام.',
+      ),
+      text(
+        'Improved application performance by approximately 20%.',
+        'حسّنت أداء التطبيق بنحو 20%.',
+      ),
+      text('Integrated DevExpress reporting solutions.', 'دمجت حلول تقارير DevExpress.'),
+    ],
     tags: ['Angular', '.NET', 'HR Systems', 'DevExpress', 'Realtime'],
   },
 ];
@@ -451,35 +517,87 @@ export function techIconUrl(slug: string): string {
   return `https://cdn.jsdelivr.net/npm/simple-icons@11/icons/${slug}.svg`;
 }
 
-function projectById(id: string): PortfolioProject {
-  const project = PROJECTS.find((item) => item.id === id);
-  if (!project) {
-    throw new Error(`Unknown project id "${id}" in portfolio data.`);
-  }
-  return project;
+export function publishedContent(): PortfolioContent {
+  return {
+    profile: PROFILE,
+    skills: SKILLS,
+    projects: PROJECTS,
+    experience: EXPERIENCE,
+    education: EDUCATION,
+    certificates: CERTIFICATES,
+    contacts: CONTACTS,
+  };
 }
 
-function jobBullets(job: ExperienceItem, lang: 'en' | 'ar'): string[] {
-  const project = job.projectId ? projectById(job.projectId) : undefined;
+export function isPortfolioContent(value: unknown): value is PortfolioContent {
+  if (!value || typeof value !== 'object') {
+    return false;
+  }
+  const record = value as PortfolioContent;
+  return Boolean(record.profile?.fullName)
+    && Array.isArray(record.skills)
+    && Array.isArray(record.projects)
+    && Array.isArray(record.experience)
+    && Array.isArray(record.education)
+    && Array.isArray(record.certificates)
+    && Array.isArray(record.contacts);
+}
+
+function findProject(projects: PortfolioProject[], id: string): PortfolioProject | undefined {
+  return projects.find((item) => item.id === id);
+}
+
+function jobBullets(content: PortfolioContent, job: ExperienceItem, lang: 'en' | 'ar'): string[] {
+  const project = job.projectId ? findProject(content.projects, job.projectId) : undefined;
   return [
     ...(project ? [project.summary[lang]] : []),
     ...job.bullets.map((bullet) => bullet[lang]),
   ];
 }
 
-export function localizedPortfolio(lang: 'en' | 'ar'): LocalizedPortfolio {
+function localizeChannel(channel: ContactChannel, lang: 'en' | 'ar'): LocalizedContact {
   return {
-    brand: PROFILE.brand[lang],
-    title: PROFILE.title[lang],
-    lead: PROFILE.lead[lang],
-    focusItems: PROFILE.focusItems[lang],
-    yearsValue: PROFILE.yearsValue,
-    summary: PROFILE.summary[lang],
+    label: lang === 'ar' ? channel.labelAr : channel.label,
+    value: lang === 'ar' && channel.valueAr ? channel.valueAr : channel.value,
+    href: channel.href,
+    icon: channel.icon,
+    external: channel.external,
+    downloadName: channel.downloadName,
+  };
+}
+
+export function socialChannels(
+  content: PortfolioContent,
+  lang: 'en' | 'ar',
+  icons: ContactIcon[],
+): LocalizedContact[] {
+  return content.contacts
+    .filter((channel) => icons.includes(channel.icon))
+    .map((channel) => localizeChannel(channel, lang));
+}
+
+export function localizedPortfolio(lang: 'en' | 'ar', content = publishedContent()): LocalizedPortfolio {
+  return {
+    brand: content.profile.brand[lang],
+    title: content.profile.title[lang],
+    lead: content.profile.lead[lang],
+    focusItems: content.profile.focusItems[lang],
+    yearsValue: content.profile.yearsValue,
+    summary: content.profile.summary[lang],
     skillGroupLabels: Object.fromEntries(
-      SKILLS.map((group) => [group.title, lang === 'ar' ? group.titleAr : group.title]),
+      content.skills.map((group) => [group.title, lang === 'ar' ? group.titleAr : group.title]),
     ),
-    jobs: EXPERIENCE.map((job) => {
-      const project = job.projectId ? projectById(job.projectId) : undefined;
+    projects: content.projects.map((project) => ({
+      id: project.id,
+      name: project.name,
+      summary: project.summary[lang],
+      note: project.note?.[lang],
+      features: (project.features ?? []).map((feature) => feature[lang]),
+      tags: project.tags ?? [],
+      link: project.link,
+    })),
+    jobs: content.experience.map((job) => {
+      const project = job.projectId ? findProject(content.projects, job.projectId) : undefined;
       return {
         company: job.company,
         companyUrl: job.companyUrl,
@@ -487,11 +605,11 @@ export function localizedPortfolio(lang: 'en' | 'ar'): LocalizedPortfolio {
         period: job.period[lang],
         product: project?.name,
         note: project?.note?.[lang],
-        bullets: jobBullets(job, lang),
+        bullets: jobBullets(content, job, lang),
         tags: project?.tags ?? [],
       };
     }),
-    education: EDUCATION.map((item) => ({
+    education: content.education.map((item) => ({
       title: item.title[lang],
       subtitle: item.subtitle[lang],
       year: item.year[lang],
@@ -499,20 +617,13 @@ export function localizedPortfolio(lang: 'en' | 'ar'): LocalizedPortfolio {
       logo: item.logo,
       logoClass: item.logoClass,
     })),
-    certificates: CERTIFICATES.map((item) => ({
+    certificates: content.certificates.map((item) => ({
       title: item.title[lang],
       subtitle: item.subtitle?.[lang],
       image: item.image,
       href: item.href,
     })),
-    contacts: CONTACTS.map((channel) => ({
-      label: lang === 'ar' ? channel.labelAr : channel.label,
-      value: lang === 'ar' && channel.valueAr ? channel.valueAr : channel.value,
-      href: channel.href,
-      icon: channel.icon,
-      external: channel.external,
-      downloadName: channel.downloadName,
-    })),
+    contacts: content.contacts.map((channel) => localizeChannel(channel, lang)),
   };
 }
 
@@ -539,44 +650,56 @@ function educationDetail(item: EducationItem): string {
   return item.subtitle.en;
 }
 
-export function buildCvDocument(): CvDocument {
-  const skillNames = new Set(SKILLS.flatMap((group) => group.techs.map((tech) => tech.name)));
-  for (const part of CV_HEADLINE_PARTS) {
+export function buildCvDocument(content = publishedContent(), strict = true): CvDocument {
+  const skillNames = new Set(content.skills.flatMap((group) => group.techs.map((tech) => tech.name)));
+  const headlineParts = CV_HEADLINE_PARTS.filter((part) => {
     if (part === 'ASP.NET Core') {
-      const mentioned = EXPERIENCE.some((job) =>
-        job.bullets.some((bullet) => bullet.en.includes('ASP.NET Core')),
+      const mentioned = content.experience.some((job) =>
+        job.bullets.some((bullet) => bullet.en.includes('ASP.NET Core'))
+        || (job.projectId
+          ? findProject(content.projects, job.projectId)?.features?.some((feature) =>
+            feature.en.includes('ASP.NET Core'),
+          )
+          : false),
       );
-      if (!mentioned) {
+      if (!mentioned && strict) {
         throw new Error('CV headline mentions ASP.NET Core, but no experience bullet does.');
       }
-      continue;
+      return mentioned;
     }
     if (!skillNames.has(part)) {
-      throw new Error(`CV headline skill "${part}" is not listed in SKILLS.`);
+      if (strict) {
+        throw new Error(`CV headline skill "${part}" is not listed in SKILLS.`);
+      }
+      return false;
     }
-  }
+    return true;
+  });
 
-  const contacts = CV_CONTACT_ORDER.map((icon) => {
-    const channel = CONTACTS.find((item) => item.icon === icon);
+  const contacts = CV_CONTACT_ORDER.flatMap((icon) => {
+    const channel = content.contacts.find((item) => item.icon === icon);
     if (!channel) {
-      throw new Error(`Missing ${icon} contact in portfolio data.`);
+      if (strict) {
+        throw new Error(`Missing ${icon} contact in portfolio data.`);
+      }
+      return [];
     }
     const value = icon === 'linkedin' || icon === 'github' ? channel.href : channel.value;
-    return { label: channel.label, value };
+    return [{ label: channel.label, value }];
   });
 
   return {
     fileName: CV_FILENAME,
-    fullName: PROFILE.fullName,
-    headline: `${PROFILE.title.en} | Remote | ${CV_HEADLINE_PARTS.join(', ')}`,
+    fullName: content.profile.fullName,
+    headline: `${content.profile.title.en} | Remote | ${headlineParts.join(', ')}`,
     contacts,
-    summary: PROFILE.summary.en,
-    skills: SKILLS.map((group) => ({
+    summary: content.profile.summary.en,
+    skills: content.skills.map((group) => ({
       title: group.title,
       items: group.techs.map((tech) => tech.name),
     })),
-    experience: EXPERIENCE.map((job) => {
-      const project = job.projectId ? projectById(job.projectId) : undefined;
+    experience: content.experience.map((job) => {
+      const project = job.projectId ? findProject(content.projects, job.projectId) : undefined;
       return {
         role: job.role.en,
         company: job.company,
@@ -584,14 +707,17 @@ export function buildCvDocument(): CvDocument {
         period: job.period.en,
         product: project?.name,
         note: project?.note?.en,
-        bullets: jobBullets(job, 'en'),
+        bullets: jobBullets(content, job, 'en'),
       };
     }),
-    projects: EXPERIENCE.flatMap((job) => {
+    projects: content.experience.flatMap((job) => {
       if (!job.projectId) {
         return [];
       }
-      const project = projectById(job.projectId);
+      const project = findProject(content.projects, job.projectId);
+      if (!project) {
+        return [];
+      }
       return [
         {
           name: project.name,
@@ -603,7 +729,7 @@ export function buildCvDocument(): CvDocument {
         },
       ];
     }),
-    education: EDUCATION.map((item) => ({
+    education: content.education.map((item) => ({
       title: item.title.en,
       detail: educationDetail(item),
       url: item.url,

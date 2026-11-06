@@ -6,7 +6,7 @@
     </div>
 
     <div class="orbit">
-      @for (skill of skills; track skill.title; let i = $index) {
+      @for (skill of skills(); track skill.title; let i = $index) {
         <article class="skill" appReveal [appRevealDelay]="i * 70" [style.--accent]="skill.accent">
           <span class="index">{{ i + 1 | number: '2.0-0' }}</span>
           <h3>{{ i18n.t().skills.groups[skill.title] || skill.title }}</h3>

@@ -1,5 +1,5 @@
 <header class="site-header" [class.is-scrolled]="scrolled()" [class.is-open]="menuOpen()">
-  <a class="brand" href="#top" (click)="closeMenu()">{{ i18n.t().brand }}</a>
+  <a class="brand" routerLink="/" fragment="top" (click)="closeMenu()">{{ i18n.t().brand }}</a>
 
   <div class="header-actions">
     <div
@@ -38,11 +38,11 @@
   </div>
 
   <nav id="primary-nav" class="nav" aria-label="Primary">
-    @for (link of nav; track link.href) {
-      <a [href]="link.href" (click)="closeMenu()">{{ i18n.t().nav[link.key] }}</a>
+    @for (link of nav; track link.fragment) {
+      <a routerLink="/" [fragment]="link.fragment" (click)="closeMenu()">{{ i18n.t().nav[link.key] }}</a>
     }
     <div class="nav-socials">
-      @for (item of socials; track item.icon) {
+      @for (item of socials(); track item.icon) {
         <a
           class="nav-social"
           [href]="item.href"
@@ -55,8 +55,8 @@
         </a>
       }
     </div>
-    <a class="cv" [href]="cvHref" download (click)="closeMenu()">
+    <button class="cv" type="button" (click)="downloadCv()">
       {{ i18n.t().downloadCv }}
-    </a>
+    </button>
   </nav>
 </header>

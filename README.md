@@ -17,6 +17,8 @@ npm start
 
 Profile, summary, skills, experience, projects, education, certificates, and contact live in [`src/app/data/portfolio.data.ts`](src/app/data/portfolio.data.ts). The site and the Download CV file both read that module, so editing it updates both.
 
+Open `/edit` to change a draft in this browser, then export `portfolio-content.json`. That draft is not on the public site until it is committed. Open `/ats`, paste a job post, and download a CV that uses only the facts already in the portfolio.
+
 The PDF is a single-column, text-based CV (`Amira_Gomaa_CV.pdf`) with the headings Summary, Skills, Experience, Projects, and Education. It is generated in the GitHub Pages workflow; do not replace it by hand.
 
 Section labels and other interface copy stay in `src/app/i18n/language.service.ts`. Arabic wording for the facts themselves is next to the English in the data file.

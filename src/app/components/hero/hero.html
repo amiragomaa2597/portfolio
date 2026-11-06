@@ -17,7 +17,7 @@
       <div class="actions">
         <a
           class="btn gold"
-          href="https://wa.me/201096825528"
+          [href]="whatsappHref()"
           target="_blank"
           rel="noopener noreferrer"
         >
@@ -25,14 +25,14 @@
           {{ i18n.t().hero.whatsapp }}
         </a>
         <a class="btn ghost" href="#experience">{{ i18n.t().hero.seeExperience }}</a>
-        <a class="btn ghost" [href]="cvHref" download>
+        <button class="btn ghost" type="button" (click)="downloadCv()">
           <app-social-icon name="cv" label="CV" />
           {{ i18n.t().hero.downloadCv }}
-        </a>
+        </button>
       </div>
 
       <div class="social-row" [attr.aria-label]="i18n.t().hero.socialAria">
-        @for (item of socials; track item.icon) {
+        @for (item of socials(); track item.icon) {
           <a
             class="social"
             [href]="item.href"

@@ -1,0 +1,165 @@
+<section class="section studio">
+  <div class="section-inner">
+    <p class="eyebrow">{{ copy().eyebrow }}</p>
+    <h2>{{ copy().title }}</h2>
+    <p class="prose">{{ copy().lead }}</p>
+
+    <div class="toolbar">
+      <button type="button" class="gold" (click)="save()">{{ copy().save }}</button>
+      <button type="button" (click)="exportFile()">{{ copy().export }}</button>
+      <label class="file">
+        {{ copy().import }}
+        <input type="file" accept="application/json,.json" (change)="onImport($event)" />
+      </label>
+      <button type="button" (click)="reset()">{{ copy().reset }}</button>
+    </div>
+    @if (note()) {
+      <p class="note">{{ note() }}</p>
+    }
+
+    <div class="tabs" role="tablist">
+      @for (item of sections; track item) {
+        <button type="button" [class.is-on]="section() === item" (click)="show(item)">
+          {{ copy()[item] }}
+        </button>
+      }
+    </div>
+
+    @if (section() === 'profile') {
+      <div class="stack">
+        <label>{{ copy().en }} <input [value]="draft.profile.fullName" (input)="draft.profile.fullName = text($event)" /></label>
+        <label>{{ copy().en }} <input [value]="draft.profile.brand.en" (input)="draft.profile.brand.en = text($event)" /></label>
+        <label>{{ copy().ar }} <input [value]="draft.profile.brand.ar" (input)="draft.profile.brand.ar = text($event)" /></label>
+        <label>{{ copy().en }} <input [value]="draft.profile.title.en" (input)="draft.profile.title.en = text($event)" /></label>
+        <label>{{ copy().ar }} <input [value]="draft.profile.title.ar" (input)="draft.profile.title.ar = text($event)" /></label>
+        <label>{{ copy().en }} <textarea [value]="draft.profile.lead.en" (input)="draft.profile.lead.en = text($event)"></textarea></label>
+        <label>{{ copy().ar }} <textarea [value]="draft.profile.lead.ar" (input)="draft.profile.lead.ar = text($event)"></textarea></label>
+        <label>{{ copy().en }} <textarea [value]="draft.profile.summary.en" (input)="draft.profile.summary.en = text($event)"></textarea></label>
+        <label>{{ copy().ar }} <textarea [value]="draft.profile.summary.ar" (input)="draft.profile.summary.ar = text($event)"></textarea></label>
+        <label>{{ copy().focusHint }} {{ copy().en }}
+          <textarea [value]="focusText('en')" (change)="setFocus('en', text($event))"></textarea>
+        </label>
+        <label>{{ copy().focusHint }} {{ copy().ar }}
+          <textarea [value]="focusText('ar')" (change)="setFocus('ar', text($event))"></textarea>
+        </label>
+        <label>Years <input [value]="draft.profile.yearsValue" (input)="draft.profile.yearsValue = text($event)" /></label>
+      </div>
+    }
+
+    @if (section() === 'skills') {
+      <button type="button" (click)="addSkill()">{{ copy().add }}</button>
+      @for (group of draft.skills; track $index) {
+        <article class="card">
+          <label>{{ copy().en }} <input [value]="group.title" (input)="group.title = text($event)" /></label>
+          <label>{{ copy().ar }} <input [value]="group.titleAr" (input)="group.titleAr = text($event)" /></label>
+          <label>Accent <input [value]="group.accent" (input)="group.accent = text($event)" /></label>
+          <label>{{ copy().techHint }}
+            <textarea [value]="techText(group)" (change)="setTechs(group, text($event))"></textarea>
+          </label>
+          <button type="button" (click)="removeAt(draft.skills, $index)">{{ copy().remove }}</button>
+        </article>
+      }
+    }
+
+    @if (section() === 'projects') {
+      <button type="button" (click)="addProject()">{{ copy().add }}</button>
+      @for (project of draft.projects; track project.id) {
+        <article class="card">
+          <label>Id <input [value]="project.id" (input)="project.id = text($event)" /></label>
+          <label>{{ copy().en }} <input [value]="project.name" (input)="project.name = text($event)" /></label>
+          <label>{{ copy().en }} <textarea [value]="project.summary.en" (input)="project.summary.en = text($event)"></textarea></label>
+          <label>{{ copy().ar }} <textarea [value]="project.summary.ar" (input)="project.summary.ar = text($event)"></textarea></label>
+          <label>{{ copy().en }} <input [value]="project.note?.en ?? ''" (input)="project.note = { en: text($event), ar: project.note?.ar ?? '' }" /></label>
+          <label>{{ copy().ar }} <input [value]="project.note?.ar ?? ''" (input)="project.note = { en: project.note?.en ?? '', ar: text($event) }" /></label>
+          <label>{{ copy().featuresHint }}
+            <textarea [value]="featureText(project)" (change)="setFeatures(project, text($event))"></textarea>
+          </label>
+          <label>{{ copy().tagsHint }}
+            <input [value]="tagText(project)" (change)="setTags(project, text($event))" />
+          </label>
+          <label>{{ copy().link }} <input [value]="project.link ?? ''" (input)="project.link = text($event) || undefined" /></label>
+          <button type="button" (click)="removeAt(draft.projects, $index)">{{ copy().remove }}</button>
+        </article>
+      }
+    }
+
+    @if (section() === 'experience') {
+      <button type="button" (click)="addJob()">{{ copy().add }}</button>
+      @for (job of draft.experience; track $index) {
+        <article class="card">
+          <label>{{ copy().en }} <input [value]="job.company" (input)="job.company = text($event)" /></label>
+          <label>{{ copy().link }} <input [value]="job.companyUrl" (input)="job.companyUrl = text($event)" /></label>
+          <label>{{ copy().en }} <input [value]="job.role.en" (input)="job.role.en = text($event)" /></label>
+          <label>{{ copy().ar }} <input [value]="job.role.ar" (input)="job.role.ar = text($event)" /></label>
+          <label>{{ copy().en }} <input [value]="job.period.en" (input)="job.period.en = text($event)" /></label>
+          <label>{{ copy().ar }} <input [value]="job.period.ar" (input)="job.period.ar = text($event)" /></label>
+          <label>Project
+            <select [value]="job.projectId ?? ''" (change)="setProjectId(job, text($event))">
+              <option value=""></option>
+              @for (project of draft.projects; track project.id) {
+                <option [value]="project.id">{{ project.name || project.id }}</option>
+              }
+            </select>
+          </label>
+          <label>{{ copy().featuresHint }}
+            <textarea [value]="bulletText(job)" (change)="setBullets(job, text($event))"></textarea>
+          </label>
+          <button type="button" (click)="removeAt(draft.experience, $index)">{{ copy().remove }}</button>
+        </article>
+      }
+    }
+
+    @if (section() === 'education') {
+      <button type="button" (click)="addEducation()">{{ copy().add }}</button>
+      @for (item of draft.education; track $index) {
+        <article class="card">
+          <label>{{ copy().en }} <input [value]="item.title.en" (input)="item.title.en = text($event)" /></label>
+          <label>{{ copy().ar }} <input [value]="item.title.ar" (input)="item.title.ar = text($event)" /></label>
+          <label>{{ copy().en }} <input [value]="item.subtitle.en" (input)="item.subtitle.en = text($event)" /></label>
+          <label>{{ copy().ar }} <input [value]="item.subtitle.ar" (input)="item.subtitle.ar = text($event)" /></label>
+          <label>{{ copy().en }} <input [value]="item.year.en" (input)="item.year.en = text($event)" /></label>
+          <label>{{ copy().ar }} <input [value]="item.year.ar" (input)="item.year.ar = text($event)" /></label>
+          <label>{{ copy().link }} <input [value]="item.url" (input)="item.url = text($event)" /></label>
+          <label>Logo <input [value]="item.logo" (input)="item.logo = text($event)" /></label>
+          <button type="button" (click)="removeAt(draft.education, $index)">{{ copy().remove }}</button>
+        </article>
+      }
+    }
+
+    @if (section() === 'certificates') {
+      <button type="button" (click)="addCertificate()">{{ copy().add }}</button>
+      @for (item of draft.certificates; track $index) {
+        <article class="card">
+          <label>{{ copy().en }} <input [value]="item.title.en" (input)="item.title.en = text($event)" /></label>
+          <label>{{ copy().ar }} <input [value]="item.title.ar" (input)="item.title.ar = text($event)" /></label>
+          <label>{{ copy().en }} <input [value]="item.subtitle?.en ?? ''" (input)="item.subtitle = { en: text($event), ar: item.subtitle?.ar ?? '' }" /></label>
+          <label>{{ copy().ar }} <input [value]="item.subtitle?.ar ?? ''" (input)="item.subtitle = { en: item.subtitle?.en ?? '', ar: text($event) }" /></label>
+          <label>Image <input [value]="item.image" (input)="item.image = text($event)" /></label>
+          <label>{{ copy().link }} <input [value]="item.href" (input)="item.href = text($event)" /></label>
+          <button type="button" (click)="removeAt(draft.certificates, $index)">{{ copy().remove }}</button>
+        </article>
+      }
+    }
+
+    @if (section() === 'contacts') {
+      <button type="button" (click)="addContact()">{{ copy().add }}</button>
+      @for (item of draft.contacts; track $index) {
+        <article class="card">
+          <label>{{ copy().en }} <input [value]="item.label" (input)="item.label = text($event)" /></label>
+          <label>{{ copy().ar }} <input [value]="item.labelAr" (input)="item.labelAr = text($event)" /></label>
+          <label>{{ copy().en }} <input [value]="item.value" (input)="item.value = text($event)" /></label>
+          <label>{{ copy().ar }} <input [value]="item.valueAr ?? ''" (input)="item.valueAr = text($event) || undefined" /></label>
+          <label>{{ copy().link }} <input [value]="item.href" (input)="item.href = text($event)" /></label>
+          <label>Icon
+            <select [value]="item.icon" (change)="item.icon = asIcon(text($event))">
+              @for (icon of icons; track icon) {
+                <option [value]="icon">{{ icon }}</option>
+              }
+            </select>
+          </label>
+          <button type="button" (click)="removeAt(draft.contacts, $index)">{{ copy().remove }}</button>
+        </article>
+      }
+    }
+  </div>
+</section>

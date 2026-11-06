@@ -1,0 +1,92 @@
+h2 {
+  max-width: 16ch;
+}
+
+.post textarea {
+  width: 100%;
+  min-height: 12rem;
+  margin-top: 1.25rem;
+  border: 1px solid rgba(18, 17, 15, 0.14);
+  border-radius: 1rem;
+  padding: 0.9rem 1rem;
+  font: inherit;
+  color: var(--ink);
+  background: rgba(255, 255, 255, 0.85);
+  resize: vertical;
+}
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+  margin-top: 0.8rem;
+}
+
+button {
+  border: 1px solid rgba(18, 17, 15, 0.16);
+  background: rgba(255, 255, 255, 0.7);
+  color: var(--ink);
+  border-radius: 999px;
+  padding: 0.5rem 0.95rem;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+button.gold {
+  background: var(--ink);
+  color: var(--paper);
+  border-color: var(--ink);
+}
+
+.warn {
+  color: var(--gold-deep);
+  font-weight: 700;
+}
+
+.report {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.report h3,
+.sheet h4 {
+  margin: 0 0 0.4rem;
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  font-weight: 600;
+}
+
+.report div {
+  padding: 1rem 1.1rem;
+  border-radius: 1.2rem;
+  border: 1px solid rgba(18, 17, 15, 0.08);
+  background: rgba(255, 255, 255, 0.55);
+}
+
+.sheet {
+  margin-top: 1.5rem;
+  padding: 1.5rem 1.4rem;
+  border-radius: 1.2rem;
+  background: #fff;
+  color: #111;
+  border: 1px solid rgba(18, 17, 15, 0.08);
+}
+
+.sheet .name,
+.sheet .role {
+  font-weight: 700;
+}
+
+.sheet p,
+.sheet li {
+  margin: 0.2rem 0;
+}
+
+@media (max-width: 760px) {
+  .report {
+    grid-template-columns: 1fr;
+  }
+}

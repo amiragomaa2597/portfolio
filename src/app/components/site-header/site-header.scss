@@ -83,6 +83,12 @@
   padding: 0.45rem 0.95rem;
   border: 1px solid var(--ink);
   border-radius: 999px;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-size: 0.92rem;
+  font-weight: 550;
+  cursor: pointer;
 }
 
 .nav-socials {

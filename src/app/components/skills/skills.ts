@@ -1,8 +1,9 @@
 import { DecimalPipe } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { RevealDirective } from '../../directives/reveal.directive';
-import { SKILLS, techIconUrl } from '../../data/portfolio.data';
+import { techIconUrl } from '../../data/portfolio.data';
 import { LanguageService } from '../../i18n/language.service';
+import { ContentStore } from '../../state/content.store';
 
 @Component({
   selector: 'app-skills',
@@ -12,7 +13,8 @@ import { LanguageService } from '../../i18n/language.service';
 })
 export class Skills {
   readonly i18n = inject(LanguageService);
-  readonly skills = SKILLS;
+  private readonly content = inject(ContentStore);
+  readonly skills = computed(() => this.content.content().skills);
   readonly iconUrl = techIconUrl;
 
   onIconError(event: Event): void {

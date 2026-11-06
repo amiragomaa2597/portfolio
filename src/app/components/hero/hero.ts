@@ -1,6 +1,8 @@
-import { Component, inject } from '@angular/core';
-import { CV_FILENAME, SOCIAL_QUICK } from '../../data/portfolio.data';
+import { Component, computed, inject } from '@angular/core';
+import { CvActions } from '../../cv/cv-actions';
+import { socialChannels } from '../../data/portfolio.data';
 import { LanguageService } from '../../i18n/language.service';
+import { ContentStore } from '../../state/content.store';
 import { SocialIcon } from '../social-icon/social-icon';
 
 @Component({
@@ -11,6 +13,22 @@ import { SocialIcon } from '../social-icon/social-icon';
 })
 export class Hero {
   readonly i18n = inject(LanguageService);
-  readonly socials = SOCIAL_QUICK;
-  readonly cvHref = CV_FILENAME;
+  private readonly content = inject(ContentStore);
+  private readonly cv = inject(CvActions);
+  readonly socials = computed(() =>
+    socialChannels(this.content.content(), this.i18n.lang(), [
+      'whatsapp',
+      'linkedin',
+      'github',
+      'email',
+      'phone',
+    ]),
+  );
+  readonly whatsappHref = computed(
+    () => this.content.content().contacts.find((channel) => channel.icon === 'whatsapp')?.href ?? '#',
+  );
+
+  downloadCv(): void {
+    void this.cv.downloadCurrent();
+  }
 }
