@@ -10,6 +10,7 @@
     "prewatch": "npm run generate:cv",
     "start": "ng serve",
     "build": "ng build",
+    "postbuild": "node scripts/pages-routes.mjs",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },
