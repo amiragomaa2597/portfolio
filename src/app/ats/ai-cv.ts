@@ -89,6 +89,7 @@ function restoreLinks(ai: CvDocument, base: CvDocument): CvDocument {
   const byLabel = new Map(base.contacts.map((contact) => [contact.label.toLowerCase(), contact]));
   const byCompany = new Map(base.experience.map((job) => [job.company.toLowerCase(), job]));
   const byEducation = new Map(base.education.map((item) => [item.title.toLowerCase(), item]));
+  const byProject = new Map(base.projects.map((project) => [project.name.toLowerCase(), project]));
 
   return {
     ...base,
@@ -121,14 +122,26 @@ function restoreLinks(ai: CvDocument, base: CvDocument): CvDocument {
         bullets: asStringList(job.bullets),
       };
     }),
-    projects: (ai.projects?.length ? ai.projects : base.projects).map((project) => ({
-      name: asString(project.name),
-      company: asString(project.company),
-      period: asString(project.period),
-      summary: asString(project.summary),
-      note: asString(project.note) || undefined,
-      tags: asStringList(project.tags),
-    })),
+    projects: (ai.projects?.length ? ai.projects : base.projects).map((project) => {
+      const known =
+        byProject.get(asString(project.name).toLowerCase())
+        ?? base.projects.find((item) =>
+          asString(project.name).toLowerCase().includes(item.name.toLowerCase().slice(0, 18))
+          || item.name.toLowerCase().includes(asString(project.name).toLowerCase().slice(0, 18)),
+        );
+      return {
+        name: asString(project.name, known?.name ?? ''),
+        company: asString(project.company, known?.company ?? ''),
+        period: asString(project.period, known?.period ?? ''),
+        summary: asString(project.summary, known?.summary ?? ''),
+        note: asString(project.note, known?.note ?? '') || undefined,
+        tags: asStringList(project.tags).length ? asStringList(project.tags) : (known?.tags ?? []),
+        link: asString(project.link, known?.link ?? '') || known?.link,
+        githubUrl: asString(project.githubUrl, known?.githubUrl ?? '') || known?.githubUrl,
+        playStoreUrl: asString(project.playStoreUrl, known?.playStoreUrl ?? '') || known?.playStoreUrl,
+        appStoreUrl: asString(project.appStoreUrl, known?.appStoreUrl ?? '') || known?.appStoreUrl,
+      };
+    }),
     education: (ai.education?.length ? ai.education : base.education).map((item) => {
       const known = byEducation.get(asString(item.title).toLowerCase());
       return {

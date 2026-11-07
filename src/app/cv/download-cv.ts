@@ -143,15 +143,22 @@ function pdfBytes(pages: PageLayout[]): Uint8Array {
 
 function pushText(rows: Row[], text: string, size: number, font: Row['font'], href?: string): void {
   const lines = wrap(text, size);
-  lines.forEach((line, index) => {
+  lines.forEach((line) => {
     rows.push({
       size,
       font,
       text: line,
       gap: 3,
-      href: href && index === 0 ? href : undefined,
+      href: href || undefined,
     });
   });
+}
+
+function pushLink(rows: Row[], label: string, href?: string): void {
+  if (!href?.trim()) {
+    return;
+  }
+  pushText(rows, `${label}: ${href.trim()}`, BODY, 'F1', href.trim());
 }
 
 function contactHref(label: string, value: string, href?: string): string | undefined {
@@ -214,7 +221,8 @@ export async function downloadCvPdf(cv: CvDocument): Promise<void> {
   }
   section(CV_HEADINGS[3]);
   for (const project of cv.projects) {
-    pushText(rows, project.name, 11, 'F2');
+    const primary = project.link || project.githubUrl || project.playStoreUrl || project.appStoreUrl;
+    pushText(rows, project.name, 11, 'F2', primary);
     if (project.company || project.period) {
       pushText(rows, [project.company, project.period].filter(Boolean).join(' | '), BODY, 'F1');
     }
@@ -222,18 +230,10 @@ export async function downloadCvPdf(cv: CvDocument): Promise<void> {
     if (project.note) {
       pushText(rows, project.note, BODY, 'F1');
     }
-    if (project.link) {
-      pushText(rows, project.link, BODY, 'F1', project.link);
-    }
-    if (project.githubUrl) {
-      pushText(rows, project.githubUrl, BODY, 'F1', project.githubUrl);
-    }
-    if (project.playStoreUrl) {
-      pushText(rows, project.playStoreUrl, BODY, 'F1', project.playStoreUrl);
-    }
-    if (project.appStoreUrl) {
-      pushText(rows, project.appStoreUrl, BODY, 'F1', project.appStoreUrl);
-    }
+    pushLink(rows, 'Live', project.link);
+    pushLink(rows, 'GitHub', project.githubUrl);
+    pushLink(rows, 'Google Play', project.playStoreUrl);
+    pushLink(rows, 'App Store', project.appStoreUrl);
     pushText(rows, `Technologies: ${project.tags.join(', ')}`, BODY, 'F1');
   }
   section(CV_HEADINGS[4]);

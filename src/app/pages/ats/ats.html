@@ -159,6 +159,34 @@
               ></textarea>
             </label>
             <label>
+              Live link
+              <input
+                [value]="project.link ?? ''"
+                (input)="patch((cv) => (cv.projects[i].link = text($event) || undefined))"
+              />
+            </label>
+            <label>
+              GitHub link
+              <input
+                [value]="project.githubUrl ?? ''"
+                (input)="patch((cv) => (cv.projects[i].githubUrl = text($event) || undefined))"
+              />
+            </label>
+            <label>
+              Google Play
+              <input
+                [value]="project.playStoreUrl ?? ''"
+                (input)="patch((cv) => (cv.projects[i].playStoreUrl = text($event) || undefined))"
+              />
+            </label>
+            <label>
+              App Store
+              <input
+                [value]="project.appStoreUrl ?? ''"
+                (input)="patch((cv) => (cv.projects[i].appStoreUrl = text($event) || undefined))"
+              />
+            </label>
+            <label>
               Technologies
               <input
                 [value]="project.tags.join(', ')"
