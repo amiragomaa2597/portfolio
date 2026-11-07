@@ -1,5 +1,5 @@
 import { Component, computed, inject, signal } from '@angular/core';
-import { generateCvWithAi, readGroqKey, writeGroqKey } from '../../ats/ai-cv';
+import { generateCvWithAi, readGroqKey, rewriteIntro, writeGroqKey } from '../../ats/ai-cv';
 import { tailorCv } from '../../ats/match-job';
 import { downloadCvPdf } from '../../cv/download-cv';
 import {
@@ -107,7 +107,11 @@ export class AtsPage {
       return;
     }
     this.error.set('');
-    const result = tailorCv(this.content.content(), post);
+    const portfolio = this.content.content();
+    const result = tailorCv(portfolio, post);
+    const intro = rewriteIntro(portfolio, post, result.matched);
+    result.cv.headline = intro.headline;
+    result.cv.summary = intro.summary;
     this.draft.set(result.cv);
     this.matched.set(result.matched);
     this.missing.set(result.missing);
@@ -125,7 +129,7 @@ export class AtsPage {
 const EN = {
   eyebrow: 'ATS builder',
   title: 'Shape the CV to the role',
-  lead: 'Paste the job post, generate with AI from your portfolio facts, edit the preview, then download a PDF with clickable links.',
+  lead: 'Paste the job post. AI rewrites the title and opening paragraph to match the role, then you can edit and download.',
   placeholder: 'Paste the job requirements here',
   apiKey: 'Groq API key',
   apiHint: 'Free key from console.groq.com. Saved only in this browser.',
@@ -145,7 +149,7 @@ const EN = {
 const AR = {
   eyebrow: 'بناء السيرة',
   title: 'تهيئة السيرة للوظيفة',
-  lead: 'الصقي إعلان الوظيفة، وولّدي السيرة بالذكاء الاصطناعي من حقائق معرضك، وعدّلي المعاينة، ثم حمّلي PDF بروابط قابلة للضغط.',
+  lead: 'الصقي إعلان الوظيفة. يعيد الذكاء الاصطناعي كتابة العنوان والفقرة الأولى لتناسب الدور، ثم عدّلي وحمّلي.',
   placeholder: 'الصقي متطلبات الوظيفة هنا',
   apiKey: 'مفتاح Groq',
   apiHint: 'مفتاح مجاني من console.groq.com. يُحفظ في هذا المتصفح فقط.',

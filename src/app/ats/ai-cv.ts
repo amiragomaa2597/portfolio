@@ -157,6 +157,102 @@ function groqErrorMessage(status: number, detail: string): string {
   return detail || `Groq request failed (${status})`;
 }
 
+function escapeRegExp(value: string): string {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+function jobMentions(jobPost: string, term: string): boolean {
+  const pattern = new RegExp(`(^|[^a-z0-9])${escapeRegExp(term)}([^a-z0-9]|$)`, 'i');
+  return pattern.test(jobPost);
+}
+
+function matchedSkills(content: PortfolioContent, jobPost: string): string[] {
+  const skills = content.skills.flatMap((group) => group.techs.map((tech) => tech.name));
+  const aliases: Array<[string, string]> = [
+    ['ASP.NET', 'ASP.NET Core'],
+    ['.NET', '.NET'],
+    ['C#', 'C#'],
+    ['Angular', 'Angular'],
+    ['Flutter', 'Flutter'],
+    ['TypeScript', 'TypeScript'],
+    ['SQL Server', 'SQL Server'],
+    ['PostgreSQL', 'PostgreSQL'],
+    ['Docker', 'Docker'],
+    ['AWS S3', 'AWS'],
+    ['Entity Framework', 'Entity Framework'],
+    ['REST APIs', 'REST'],
+  ];
+  const found: string[] = [];
+  for (const [skill, alias] of aliases) {
+    if (skills.includes(skill) && (jobMentions(jobPost, skill) || jobMentions(jobPost, alias))) {
+      found.push(skill);
+    }
+  }
+  for (const skill of skills) {
+    if (!found.includes(skill) && jobMentions(jobPost, skill)) {
+      found.push(skill);
+    }
+  }
+  return found.slice(0, 6);
+}
+
+function guessRoleTitle(jobPost: string): string {
+  const lines = jobPost
+    .split(/\n+/)
+    .map((line) => line.trim())
+    .filter(Boolean);
+  const roleLine =
+    lines.find((line) =>
+      /\b(developer|engineer|fullstack|full[- ]stack|\.net|angular|flutter|software)\b/i.test(line)
+      && line.length < 90,
+    ) ?? '';
+  const cleaned = roleLine
+    .replace(/^(job title|title|role|position)\s*[:\-]\s*/i, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+  if (cleaned && cleaned.length > 3) {
+    return cleaned;
+  }
+  if (jobMentions(jobPost, 'Full Stack') || jobMentions(jobPost, 'Full-Stack')) {
+    return 'Full Stack Developer';
+  }
+  if (jobMentions(jobPost, '.NET') || jobMentions(jobPost, 'ASP.NET')) {
+    return '.NET Developer';
+  }
+  if (jobMentions(jobPost, 'Angular')) {
+    return 'Angular Developer';
+  }
+  if (jobMentions(jobPost, 'Flutter')) {
+    return 'Flutter Developer';
+  }
+  return 'Full Stack Developer';
+}
+
+/** Always rewrite title + opening paragraph so the CV visibly matches the job. */
+export function rewriteIntro(
+  content: PortfolioContent,
+  jobPost: string,
+  matched: string[],
+): { headline: string; summary: string } {
+  const skills = matched.length ? matched : matchedSkills(content, jobPost);
+  const role = guessRoleTitle(jobPost);
+  const skillPart = skills.length ? skills.join(', ') : 'C#, ASP.NET Core, Angular';
+  const headline = `${role} | ${skillPart}`;
+  const focus = skills.slice(0, 4).join(', ') || '.NET, Angular, and Flutter';
+  const years = content.profile.yearsValue;
+  const summary =
+    `${role} with ${years} years building production web and mobile systems. ` +
+    `Strong fit for this role through hands-on work with ${focus}. ` +
+    `Experienced delivering ERP and HR platforms, REST APIs, multi-tenant SaaS, and store releases — ` +
+    `ready to apply the same stack to the requirements in this posting.`;
+  return { headline, summary };
+}
+
+function almostSame(a: string, b: string): boolean {
+  const norm = (value: string) => value.toLowerCase().replace(/\s+/g, ' ').trim();
+  return norm(a) === norm(b) || (norm(a).includes(norm(b).slice(0, 40)) && norm(b).length > 40);
+}
+
 /** Free-tier chat models after Llama was removed from developer accounts. */
 const GROQ_MODELS = ['openai/gpt-oss-120b', 'openai/gpt-oss-20b', 'qwen/qwen3.8-27b'] as const;
 
@@ -169,7 +265,7 @@ async function callGroq(apiKey: string, model: string, messages: Array<{ role: s
     },
     body: JSON.stringify({
       model,
-      temperature: 0.2,
+      temperature: 0.35,
       response_format: { type: 'json_object' },
       messages,
     }),
@@ -183,26 +279,36 @@ export async function generateCvWithAi(
 ): Promise<{ cv: CvDocument; matched: string[]; missing: string[] }> {
   const base = buildCvDocument(content, false);
   const local = tailorCv(content, jobPost);
+  const matched = local.matched.length ? local.matched : matchedSkills(content, jobPost);
+  const introHint = rewriteIntro(content, jobPost, matched);
   const messages = [
     {
       role: 'system',
       content:
-        'You tailor an ATS resume for Amira Gomaa. Use ONLY facts from the provided portfolio JSON. ' +
-        'Do not invent employers, dates, degrees, skills, projects, or numbers. ' +
-        'You may rewrite and reorder summary, skills, experience bullets, and project text to match the job. ' +
+        'You are rewriting Amira Gomaa\'s ATS resume for ONE specific job. English only. ' +
+        'CRITICAL: You MUST rewrite "headline" (the CV title under her name) and "summary" (the first paragraph). ' +
+        'They must NOT copy the original portfolio wording. Mirror the job title and lead with requirements she actually meets. ' +
+        'Use ONLY facts from portfolio. Do not invent employers, dates, degrees, skills, projects, or numbers. ' +
         'Keep company names, periods, companyUrl, education urls, and contact hrefs exactly as given. ' +
+        'Reorder skills and experience bullets so job-matching lines come first. ' +
         'Return JSON with keys: fullName, headline, contacts[{label,value,href}], summary, ' +
         'skills[{title,items}], experience[{role,company,companyUrl,period,product,note,bullets}], ' +
         'projects[{name,company,period,summary,note,tags}], education[{title,detail,url}], ' +
-        'matched[string], missing[string]. matched = portfolio skills that fit the job. ' +
-        'missing = job requirements not covered by the portfolio. English only.',
+        'matched[string], missing[string].',
     },
     {
       role: 'user',
       content: JSON.stringify({
+        instruction:
+          'Write a new headline and a new opening summary for this job. Example direction only: ' +
+          introHint.headline,
         jobPost,
         portfolio: sourceFacts(content),
-        baseCv: base,
+        mustChange: {
+          originalHeadline: base.headline,
+          originalSummary: base.summary,
+          required: 'headline and summary must be different from originalHeadline and originalSummary',
+        },
       }),
     },
   ];
@@ -237,9 +343,20 @@ export async function generateCvWithAi(
     missing?: string[];
   };
   const cv = restoreLinks(parsed, base);
+
+  // Guarantee the title and first paragraph always change for the job.
+  if (almostSame(cv.headline, base.headline) || !cv.headline.trim()) {
+    cv.headline = introHint.headline;
+  }
+  if (almostSame(cv.summary, base.summary) || !cv.summary.trim()) {
+    cv.summary = introHint.summary;
+  }
+
   return {
     cv,
-    matched: Array.isArray(parsed.matched) ? parsed.matched.map(String) : local.matched,
+    matched: Array.isArray(parsed.matched) && parsed.matched.length
+      ? parsed.matched.map(String)
+      : matched,
     missing: Array.isArray(parsed.missing) ? parsed.missing.map(String) : local.missing,
   };
 }

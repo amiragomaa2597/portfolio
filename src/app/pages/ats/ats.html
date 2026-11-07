@@ -63,7 +63,7 @@
           <input [value]="ready.fullName" (input)="patch((cv) => (cv.fullName = text($event)))" />
         </label>
         <label>
-          Headline
+          Title / headline
           <input [value]="ready.headline" (input)="patch((cv) => (cv.headline = text($event)))" />
         </label>
 
@@ -88,7 +88,7 @@
 
         <h4>{{ headings[0] }}</h4>
         <label>
-          Summary
+          Opening paragraph
           <textarea [value]="ready.summary" (input)="patch((cv) => (cv.summary = text($event)))"></textarea>
         </label>
 
