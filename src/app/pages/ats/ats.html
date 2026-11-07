@@ -56,6 +56,22 @@
         </div>
       </div>
 
+      @if (messageBody()) {
+        <section class="message">
+          <div class="message-head">
+            <div>
+              <h3>{{ copy().messageTitle }}</h3>
+              <p>{{ copy().messageLead }}</p>
+              <a [href]="portfolioUrl" target="_blank" rel="noopener noreferrer">{{ copy().portfolio }}</a>
+            </div>
+            <button type="button" class="gold" (click)="copyMessage()">
+              {{ copied() ? copy().copied : copy().copyMessage }}
+            </button>
+          </div>
+          <textarea [value]="messageBody()" (input)="setMessage($event)"></textarea>
+        </section>
+      }
+
       <p class="edit-lead">{{ copy().edit }}</p>
       <article class="sheet editor">
         <label>

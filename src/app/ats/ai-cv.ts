@@ -3,6 +3,7 @@ import { tailorCv } from './match-job';
 
 const KEY_STORAGE = 'portfolio.groqKey';
 const LEGACY_KEY_STORAGE = 'portfolio.openaiKey';
+export const PORTFOLIO_URL = 'https://amiragomaa2597.github.io/portfolio/';
 
 export function readGroqKey(): string {
   try {
@@ -285,11 +286,40 @@ async function callGroq(apiKey: string, model: string, messages: Array<{ role: s
   });
 }
 
+export function buildApplicationMessage(
+  content: PortfolioContent,
+  jobPost: string,
+  matched: string[],
+  cv?: CvDocument,
+): string {
+  const role = guessRoleTitle(jobPost);
+  const skills = (matched.length ? matched : matchedSkills(content, jobPost)).slice(0, 5).join(', ');
+  const headline = cv?.headline || rewriteIntro(content, jobPost, matched).headline;
+  const email =
+    content.contacts.find((channel) => channel.icon === 'email')?.value
+    ?? 'amiragomaa2597@gmail.com';
+  return [
+    `Dear Hiring Team,`,
+    ``,
+    `I am writing to apply for the ${role} role. I am a full-stack developer with hands-on experience that matches this posting, especially ${skills || '.NET, Angular, and SQL Server'}.`,
+    ``,
+    `My tailored profile for this role: ${headline}.`,
+    `You can review my portfolio here: ${PORTFOLIO_URL}`,
+    ``,
+    `I would welcome the chance to discuss how I can contribute. Thank you for your time.`,
+    ``,
+    `Best regards,`,
+    `Amira Gomaa Hassan`,
+    email,
+    PORTFOLIO_URL,
+  ].join('\n');
+}
+
 export async function generateCvWithAi(
   content: PortfolioContent,
   jobPost: string,
   apiKey: string,
-): Promise<{ cv: CvDocument; matched: string[]; missing: string[] }> {
+): Promise<{ cv: CvDocument; matched: string[]; missing: string[]; messageBody: string }> {
   const base = buildCvDocument(content, false);
   const local = tailorCv(content, jobPost);
   const matched = local.matched.length ? local.matched : matchedSkills(content, jobPost);
@@ -304,23 +334,28 @@ export async function generateCvWithAi(
         'Use ONLY facts from portfolio. Do not invent employers, dates, degrees, skills, projects, or numbers. ' +
         'Keep company names, periods, companyUrl, education urls, and contact hrefs exactly as given. ' +
         'Reorder skills and experience bullets so job-matching lines come first. ' +
+        'Also write messageBody: a short professional email/application body (4-7 short paragraphs or spaced lines) ' +
+        'that she can copy-paste with the CV. It MUST include the exact portfolio URL provided. ' +
+        'Do not invent employers. Keep the tone confident and concise. Sign as Amira Gomaa Hassan. ' +
         'Return JSON with keys: fullName, headline, contacts[{label,value,href}], summary, ' +
         'skills[{title,items}], experience[{role,company,companyUrl,period,product,note,bullets}], ' +
         'projects[{name,company,period,summary,note,tags}], education[{title,detail,url}], ' +
-        'matched[string], missing[string].',
+        'matched[string], missing[string], messageBody[string].',
     },
     {
       role: 'user',
       content: JSON.stringify({
         instruction:
-          'Write a new headline and a new opening summary for this job. Example direction only: ' +
+          'Write a new headline, a new opening summary, and a copy-ready application messageBody for this job. Example headline direction only: ' +
           introHint.headline,
+        portfolioUrl: PORTFOLIO_URL,
         jobPost,
         portfolio: sourceFacts(content),
         mustChange: {
           originalHeadline: base.headline,
           originalSummary: base.summary,
           required: 'headline and summary must be different from originalHeadline and originalSummary',
+          messageBodyMustInclude: PORTFOLIO_URL,
         },
       }),
     },
@@ -354,6 +389,7 @@ export async function generateCvWithAi(
   const parsed = parseAiJson(contentText) as CvDocument & {
     matched?: string[];
     missing?: string[];
+    messageBody?: string;
   };
   const cv = restoreLinks(parsed, base);
 
@@ -365,11 +401,19 @@ export async function generateCvWithAi(
     cv.summary = introHint.summary;
   }
 
+  const finalMatched =
+    Array.isArray(parsed.matched) && parsed.matched.length
+      ? parsed.matched.map(String)
+      : matched;
+  let messageBody = asString(parsed.messageBody).trim();
+  if (!messageBody || !messageBody.includes(PORTFOLIO_URL)) {
+    messageBody = buildApplicationMessage(content, jobPost, finalMatched, cv);
+  }
+
   return {
     cv,
-    matched: Array.isArray(parsed.matched) && parsed.matched.length
-      ? parsed.matched.map(String)
-      : matched,
+    matched: finalMatched,
     missing: Array.isArray(parsed.missing) ? parsed.missing.map(String) : local.missing,
+    messageBody,
   };
 }

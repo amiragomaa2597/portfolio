@@ -1,5 +1,12 @@
 import { Component, computed, inject, signal } from '@angular/core';
-import { generateCvWithAi, readGroqKey, rewriteIntro, writeGroqKey } from '../../ats/ai-cv';
+import {
+  buildApplicationMessage,
+  generateCvWithAi,
+  PORTFOLIO_URL,
+  readGroqKey,
+  rewriteIntro,
+  writeGroqKey,
+} from '../../ats/ai-cv';
 import { tailorCv } from '../../ats/match-job';
 import { downloadCvPdf } from '../../cv/download-cv';
 import {
@@ -21,14 +28,17 @@ export class AtsPage {
   readonly i18n = inject(LanguageService);
   private readonly content = inject(ContentStore);
   readonly headings = CV_HEADINGS;
+  readonly portfolioUrl = PORTFOLIO_URL;
   readonly copy = computed(() => (this.i18n.lang() === 'ar' ? AR : EN));
   readonly jobPost = signal('');
   readonly apiKey = signal(readGroqKey());
   readonly draft = signal<CvDocument | null>(null);
+  readonly messageBody = signal('');
   readonly matched = signal<string[]>([]);
   readonly missing = signal<string[]>([]);
   readonly error = signal('');
   readonly busy = signal(false);
+  readonly copied = signal(false);
 
   setJob(event: Event): void {
     this.jobPost.set((event.target as HTMLTextAreaElement).value);
@@ -38,6 +48,11 @@ export class AtsPage {
     const value = (event.target as HTMLInputElement).value;
     this.apiKey.set(value);
     writeGroqKey(value);
+  }
+
+  setMessage(event: Event): void {
+    this.messageBody.set((event.target as HTMLTextAreaElement).value);
+    this.copied.set(false);
   }
 
   text(event: Event): string {
@@ -88,11 +103,13 @@ export class AtsPage {
     }
     this.busy.set(true);
     this.error.set('');
+    this.copied.set(false);
     try {
       const result = await generateCvWithAi(this.content.content(), post, key);
       this.draft.set(result.cv);
       this.matched.set(result.matched);
       this.missing.set(result.missing);
+      this.messageBody.set(result.messageBody);
     } catch (error) {
       this.error.set(error instanceof Error ? error.message : this.copy().aiFailed);
     } finally {
@@ -107,6 +124,7 @@ export class AtsPage {
       return;
     }
     this.error.set('');
+    this.copied.set(false);
     const portfolio = this.content.content();
     const result = tailorCv(portfolio, post);
     const intro = rewriteIntro(portfolio, post, result.matched);
@@ -115,6 +133,7 @@ export class AtsPage {
     this.draft.set(result.cv);
     this.matched.set(result.matched);
     this.missing.set(result.missing);
+    this.messageBody.set(buildApplicationMessage(portfolio, post, result.matched, result.cv));
   }
 
   download(): void {
@@ -124,12 +143,25 @@ export class AtsPage {
     }
     void downloadCvPdf({ ...current, fileName: 'Amira_Gomaa_ATS.pdf' });
   }
+
+  async copyMessage(): Promise<void> {
+    const text = this.messageBody().trim();
+    if (!text) {
+      return;
+    }
+    try {
+      await navigator.clipboard.writeText(text);
+      this.copied.set(true);
+    } catch {
+      this.error.set(this.copy().copyFailed);
+    }
+  }
 }
 
 const EN = {
   eyebrow: 'ATS builder',
   title: 'Shape the CV to the role',
-  lead: 'Paste the job post. AI rewrites the title and opening paragraph to match the role, then you can edit and download.',
+  lead: 'Paste the job post. AI rewrites the title and opening paragraph, builds a copy-ready message with your portfolio link, then you can edit and download.',
   placeholder: 'Paste the job requirements here',
   apiKey: 'Groq API key',
   apiHint: 'Free key from console.groq.com. Saved only in this browser.',
@@ -144,12 +176,18 @@ const EN = {
   aiFailed: 'AI generation failed.',
   edit: 'Edit the preview before download',
   busy: 'Generating…',
+  messageTitle: 'Application message',
+  messageLead: 'Copy this body after the CV. It already includes your portfolio link.',
+  copyMessage: 'Copy message',
+  copied: 'Copied',
+  copyFailed: 'Could not copy. Select the text and copy it manually.',
+  portfolio: 'Portfolio',
 };
 
 const AR = {
   eyebrow: 'بناء السيرة',
   title: 'تهيئة السيرة للوظيفة',
-  lead: 'الصقي إعلان الوظيفة. يعيد الذكاء الاصطناعي كتابة العنوان والفقرة الأولى لتناسب الدور، ثم عدّلي وحمّلي.',
+  lead: 'الصقي إعلان الوظيفة. يعيد الذكاء الاصطناعي كتابة العنوان والفقرة الأولى، ويبني رسالة جاهزة للنسخ مع رابط معرضك، ثم عدّلي وحمّلي.',
   placeholder: 'الصقي متطلبات الوظيفة هنا',
   apiKey: 'مفتاح Groq',
   apiHint: 'مفتاح مجاني من console.groq.com. يُحفظ في هذا المتصفح فقط.',
@@ -164,4 +202,10 @@ const AR = {
   aiFailed: 'فشل التوليد بالذكاء الاصطناعي.',
   edit: 'عدّلي المعاينة قبل التحميل',
   busy: 'جارٍ التوليد…',
+  messageTitle: 'رسالة التقديم',
+  messageLead: 'انسخِ هذه الرسالة مع السيرة. رابط معرضك موجود داخلها.',
+  copyMessage: 'نسخ الرسالة',
+  copied: 'تم النسخ',
+  copyFailed: 'تعذّر النسخ. حدّدي النص وانسخيه يدوياً.',
+  portfolio: 'المعرض',
 };
