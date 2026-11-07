@@ -9,6 +9,7 @@ import {
   type SkillGroup,
 } from '../../data/portfolio.data';
 import { LanguageService } from '../../i18n/language.service';
+import { syncFeaturedGithubProjects } from '../../projects/github-projects';
 import { ContentStore } from '../../state/content.store';
 
 type Section = 'profile' | 'skills' | 'projects' | 'experience' | 'education' | 'certificates' | 'contacts';
@@ -35,6 +36,7 @@ export class EditPage {
   ];
   readonly section = signal<Section>('profile');
   readonly note = signal('');
+  readonly syncing = signal(false);
   draft: PortfolioContent = structuredClone(this.store.content());
   readonly copy = computed(() => (this.i18n.lang() === 'ar' ? AR : EN));
 
@@ -144,6 +146,19 @@ export class EditPage {
     });
   }
 
+  async syncGithub(): Promise<void> {
+    this.syncing.set(true);
+    this.note.set('');
+    try {
+      this.draft.projects = await syncFeaturedGithubProjects(this.draft.projects);
+      this.note.set(this.copy().synced);
+    } catch (error) {
+      this.note.set(error instanceof Error ? error.message : this.copy().syncFailed);
+    } finally {
+      this.syncing.set(false);
+    }
+  }
+
   addJob(): void {
     this.draft.experience.push({
       company: '',
@@ -218,7 +233,12 @@ const EN = {
   tagsHint: 'Comma-separated tags',
   techHint: 'One technology per line: Name | icon-slug',
   focusHint: 'One line per focus item',
-  link: 'Link',
+  link: 'Live link',
+  github: 'GitHub link',
+  githubRepo: 'GitHub repo (owner/name)',
+  syncGithub: 'Sync featured GitHub projects',
+  synced: 'GitHub projects synced into the draft. Save to keep them.',
+  syncFailed: 'Could not sync from GitHub.',
   profile: 'Profile',
   skills: 'Skills',
   projects: 'Projects',
@@ -248,7 +268,12 @@ const AR = {
   tagsHint: 'الوسوم مفصولة بفاصلة',
   techHint: 'تقنية في كل سطر: الاسم | icon-slug',
   focusHint: 'عنصر في كل سطر',
-  link: 'رابط',
+  link: 'رابط مباشر',
+  github: 'رابط GitHub',
+  githubRepo: 'مستودع GitHub (owner/name)',
+  syncGithub: 'مزامنة مشاريع GitHub المميزة',
+  synced: 'تمت مزامنة مشاريع GitHub إلى المسودة. احفظي للاحتفاظ بها.',
+  syncFailed: 'تعذّرت المزامنة من GitHub.',
   profile: 'نبذة',
   skills: 'المهارات',
   projects: 'المشاريع',

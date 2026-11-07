@@ -9,15 +9,23 @@
       @for (project of i18n.t().projects.items; track project.id; let i = $index) {
         <article class="panel" appReveal [appRevealDelay]="i * 90">
           <div class="meta">
-            <h3>
-              @if (project.link) {
-                <a [href]="project.link" target="_blank" rel="noopener noreferrer">{{ project.name }}</a>
-              } @else {
-                {{ project.name }}
-              }
-            </h3>
+            <h3>{{ project.name }}</h3>
             @if (project.note) {
               <p class="note">{{ project.note }}</p>
+            }
+            @if (project.link || project.githubUrl) {
+              <div class="links">
+                @if (project.link) {
+                  <a [href]="project.link" target="_blank" rel="noopener noreferrer">
+                    {{ i18n.t().projects.live }}
+                  </a>
+                }
+                @if (project.githubUrl) {
+                  <a [href]="project.githubUrl" target="_blank" rel="noopener noreferrer">
+                    {{ i18n.t().projects.github }}
+                  </a>
+                }
+              </div>
             }
           </div>
           <div class="body">

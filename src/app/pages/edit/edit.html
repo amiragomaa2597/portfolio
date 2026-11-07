@@ -62,7 +62,10 @@
     }
 
     @if (section() === 'projects') {
-      <button type="button" (click)="addProject()">{{ copy().add }}</button>
+      <div class="toolbar">
+        <button type="button" (click)="addProject()">{{ copy().add }}</button>
+        <button type="button" [disabled]="syncing()" (click)="syncGithub()">{{ copy().syncGithub }}</button>
+      </div>
       @for (project of draft.projects; track project.id) {
         <article class="card">
           <label>Id <input [value]="project.id" (input)="project.id = text($event)" /></label>
@@ -78,6 +81,8 @@
             <input [value]="tagText(project)" (change)="setTags(project, text($event))" />
           </label>
           <label>{{ copy().link }} <input [value]="project.link ?? ''" (input)="project.link = text($event) || undefined" /></label>
+          <label>{{ copy().github }} <input [value]="project.githubUrl ?? ''" (input)="project.githubUrl = text($event) || undefined" /></label>
+          <label>{{ copy().githubRepo }} <input [value]="project.githubRepo ?? ''" (input)="project.githubRepo = text($event) || undefined" /></label>
           <button type="button" (click)="removeAt(draft.projects, $index)">{{ copy().remove }}</button>
         </article>
       }

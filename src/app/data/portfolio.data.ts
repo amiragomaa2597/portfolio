@@ -31,8 +31,12 @@ export interface PortfolioProject {
   /** Website-only lines. The static CV keeps the summary and does not repeat these. */
   features: Localized[];
   tags: string[];
-  /** Company page when one already exists. Omitted when the product has no public URL. */
+  /** Live demo or production URL. */
   link?: string;
+  /** Public GitHub case study or source URL. */
+  githubUrl?: string;
+  /** owner/repo used to refresh metadata from GitHub. */
+  githubRepo?: string;
 }
 
 export interface ExperienceItem {
@@ -119,6 +123,7 @@ export interface LocalizedProject {
   features: string[];
   tags: string[];
   link?: string;
+  githubUrl?: string;
 }
 
 export interface LocalizedPortfolio {
@@ -314,6 +319,80 @@ export const SKILLS: SkillGroup[] = [
 ];
 
 export const PROJECTS: PortfolioProject[] = [
+  {
+    id: 'jupiter-platform',
+    name: 'Jupiter Educational Platform',
+    summary: text(
+      'Full-stack academy platform for courses, finance, attendance, competitions, and the student portal.',
+      'منصة أكاديمية كاملة للكورسات والمالية والحضور والمسابقات وبوابة الطلاب.',
+    ),
+    note: text(
+      'Public HR case study on GitHub. Live product at Jupiter Software.',
+      'دراسة حالة عامة للموارد البشرية على GitHub. المنتج المباشر على Jupiter Software.',
+    ),
+    features: [
+      text('Courses, batches, and enrollments', 'الكورسات والمجموعات والتسجيل'),
+      text('Attendance, homework, and learning workflows', 'الحضور والواجبات ومسارات التعلم'),
+      text('Finance, invoices, and operations dashboards', 'المالية والفواتير ولوحات التشغيل'),
+      text('Competitions and student / parent portal', 'المسابقات وبوابة الطالب وولي الأمر'),
+      text('Angular + ASP.NET Core + SQL Server', 'Angular وASP.NET Core وSQL Server'),
+    ],
+    tags: ['.NET', 'Angular', 'Education', 'SQL Server'],
+    link: 'https://www.jupitersoftware.net',
+    githubUrl: 'https://github.com/amiragomaa2597/Jupiter-Educational-Platform',
+    githubRepo: 'amiragomaa2597/Jupiter-Educational-Platform',
+  },
+  {
+    id: 'kiddy-ranch',
+    name: 'Kiddy Ranch Platform',
+    summary: text(
+      'Nursery marketing site plus student records, payments, and day-to-day operations.',
+      'موقع حضانة مع سجلات الطلاب والمدفوعات والتشغيل اليومي.',
+    ),
+    features: [
+      text('Public family website and enrollment path', 'موقع عام للعائلات وطريق للتسجيل'),
+      text('Student files, fees, and printable invoices', 'ملفات الطلاب والرسوم والفواتير'),
+      text('Angular + ASP.NET Core case study on GitHub', 'دراسة حالة Angular وASP.NET Core على GitHub'),
+    ],
+    tags: ['Angular', '.NET', 'Nursery', 'Finance'],
+    link: 'https://www.kiddyranch.com',
+    githubUrl: 'https://github.com/amiragomaa2597/Kiddy-Ranch-Platform',
+    githubRepo: 'amiragomaa2597/Kiddy-Ranch-Platform',
+  },
+  {
+    id: 'green-hub',
+    name: 'The Green Hub',
+    summary: text(
+      'Landing page for a smart, sustainable community center.',
+      'صفحة تعريف لمركز مجتمعي ذكي ومستدام.',
+    ),
+    features: [
+      text('Clear story and community sections', 'قصة واضحة وأقسام للمجتمع'),
+      text('Calm mobile layout', 'تصميم هادئ للموبايل'),
+      text('Published on GitHub Pages', 'منشور على GitHub Pages'),
+    ],
+    tags: ['Angular', 'Landing', 'MBA'],
+    link: 'https://amiragomaa2597.github.io/green-hub/',
+    githubUrl: 'https://github.com/amiragomaa2597/green-hub',
+    githubRepo: 'amiragomaa2597/green-hub',
+  },
+  {
+    id: 'portfolio-site',
+    name: 'Personal portfolio & ATS CV',
+    summary: text(
+      'This website and an ATS-friendly PDF generator for tailored job applications.',
+      'هذا الموقع ومولّد سيرة ATS لطلبات التوظيف المخصّصة.',
+    ),
+    features: [
+      text('Bilingual portfolio profile', 'ملف شخصي ثنائي اللغة'),
+      text('Editable draft and ATS builder', 'مسودة قابلة للتعديل وبناء سيرة ATS'),
+      text('Downloadable PDF with clickable links', 'PDF قابل للتحميل بروابط قابلة للضغط'),
+    ],
+    tags: ['Angular', 'ATS PDF', 'CV'],
+    link: 'https://amiragomaa2597.github.io/portfolio/',
+    githubUrl: 'https://github.com/amiragomaa2597/portfolio',
+    githubRepo: 'amiragomaa2597/portfolio',
+  },
   {
     id: 'bussma-erp',
     name: 'Bussma ERP',
@@ -597,6 +676,7 @@ export function localizedPortfolio(lang: 'en' | 'ar', content = publishedContent
       features: (project.features ?? []).map((feature) => feature[lang]),
       tags: project.tags ?? [],
       link: project.link,
+      githubUrl: project.githubUrl,
     })),
     jobs: content.experience.map((job) => {
       const project = job.projectId ? findProject(content.projects, job.projectId) : undefined;
