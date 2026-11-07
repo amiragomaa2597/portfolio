@@ -1,0 +1,66 @@
+.gate {
+  max-width: 32rem;
+}
+
+h2 {
+  max-width: 18ch;
+}
+
+.card {
+  display: grid;
+  gap: 0.85rem;
+  margin-top: 1.4rem;
+  padding: 1.25rem;
+  border-radius: 1.2rem;
+  border: 1px solid rgba(18, 17, 15, 0.08);
+  background: rgba(255, 255, 255, 0.72);
+}
+
+label {
+  display: grid;
+  gap: 0.35rem;
+}
+
+label span {
+  font-weight: 700;
+  color: var(--ink-soft);
+}
+
+input {
+  width: 100%;
+  border: 1px solid rgba(18, 17, 15, 0.14);
+  border-radius: 0.9rem;
+  padding: 0.75rem 0.9rem;
+  font: inherit;
+  color: var(--ink);
+  background: rgba(255, 255, 255, 0.9);
+}
+
+button {
+  justify-self: start;
+  border: 1px solid rgba(18, 17, 15, 0.16);
+  background: rgba(255, 255, 255, 0.7);
+  color: var(--ink);
+  border-radius: 999px;
+  padding: 0.5rem 1.1rem;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+button.gold {
+  background: var(--ink);
+  color: var(--paper);
+  border-color: var(--ink);
+}
+
+button:disabled {
+  opacity: 0.55;
+  cursor: wait;
+}
+
+.warn {
+  margin: 0;
+  color: #8a2f1a;
+  font-weight: 700;
+}

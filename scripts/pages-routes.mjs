@@ -7,7 +7,7 @@ const site = path.join(root, 'dist/amira-portfolio-ng/browser');
 const index = path.join(site, 'index.html');
 
 cpSync(index, path.join(site, '404.html'));
-for (const route of ['ats', 'edit']) {
+for (const route of ['ats', 'edit', 'gate']) {
   const dir = path.join(site, route);
   mkdirSync(dir, { recursive: true });
   cpSync(index, path.join(dir, 'index.html'));
