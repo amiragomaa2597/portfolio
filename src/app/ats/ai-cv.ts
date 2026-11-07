@@ -157,6 +157,25 @@ function groqErrorMessage(status: number, detail: string): string {
   return detail || `Groq request failed (${status})`;
 }
 
+/** Free-tier chat models after Llama was removed from developer accounts. */
+const GROQ_MODELS = ['openai/gpt-oss-120b', 'openai/gpt-oss-20b', 'qwen/qwen3.8-27b'] as const;
+
+async function callGroq(apiKey: string, model: string, messages: Array<{ role: string; content: string }>): Promise<Response> {
+  return fetch('https://api.groq.com/openai/v1/chat/completions', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${apiKey.trim()}`,
+    },
+    body: JSON.stringify({
+      model,
+      temperature: 0.2,
+      response_format: { type: 'json_object' },
+      messages,
+    }),
+  });
+}
+
 export async function generateCvWithAi(
   content: PortfolioContent,
   jobPost: string,
@@ -164,45 +183,45 @@ export async function generateCvWithAi(
 ): Promise<{ cv: CvDocument; matched: string[]; missing: string[] }> {
   const base = buildCvDocument(content, false);
   const local = tailorCv(content, jobPost);
-  const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${apiKey.trim()}`,
+  const messages = [
+    {
+      role: 'system',
+      content:
+        'You tailor an ATS resume for Amira Gomaa. Use ONLY facts from the provided portfolio JSON. ' +
+        'Do not invent employers, dates, degrees, skills, projects, or numbers. ' +
+        'You may rewrite and reorder summary, skills, experience bullets, and project text to match the job. ' +
+        'Keep company names, periods, companyUrl, education urls, and contact hrefs exactly as given. ' +
+        'Return JSON with keys: fullName, headline, contacts[{label,value,href}], summary, ' +
+        'skills[{title,items}], experience[{role,company,companyUrl,period,product,note,bullets}], ' +
+        'projects[{name,company,period,summary,note,tags}], education[{title,detail,url}], ' +
+        'matched[string], missing[string]. matched = portfolio skills that fit the job. ' +
+        'missing = job requirements not covered by the portfolio. English only.',
     },
-    body: JSON.stringify({
-      model: 'llama-3.3-70b-versatile',
-      temperature: 0.2,
-      response_format: { type: 'json_object' },
-      messages: [
-        {
-          role: 'system',
-          content:
-            'You tailor an ATS resume for Amira Gomaa. Use ONLY facts from the provided portfolio JSON. ' +
-            'Do not invent employers, dates, degrees, skills, projects, or numbers. ' +
-            'You may rewrite and reorder summary, skills, experience bullets, and project text to match the job. ' +
-            'Keep company names, periods, companyUrl, education urls, and contact hrefs exactly as given. ' +
-            'Return JSON with keys: fullName, headline, contacts[{label,value,href}], summary, ' +
-            'skills[{title,items}], experience[{role,company,companyUrl,period,product,note,bullets}], ' +
-            'projects[{name,company,period,summary,note,tags}], education[{title,detail,url}], ' +
-            'matched[string], missing[string]. matched = portfolio skills that fit the job. ' +
-            'missing = job requirements not covered by the portfolio. English only.',
-        },
-        {
-          role: 'user',
-          content: JSON.stringify({
-            jobPost,
-            portfolio: sourceFacts(content),
-            baseCv: base,
-          }),
-        },
-      ],
-    }),
-  });
+    {
+      role: 'user',
+      content: JSON.stringify({
+        jobPost,
+        portfolio: sourceFacts(content),
+        baseCv: base,
+      }),
+    },
+  ];
 
-  if (!response.ok) {
-    const detail = await response.text();
-    throw new Error(groqErrorMessage(response.status, detail));
+  let response: Response | null = null;
+  let lastDetail = '';
+  for (const model of GROQ_MODELS) {
+    response = await callGroq(apiKey, model, messages);
+    if (response.ok) {
+      break;
+    }
+    lastDetail = await response.text();
+    if (!/model_not_found|does not exist|do not have access/i.test(lastDetail)) {
+      throw new Error(groqErrorMessage(response.status, lastDetail));
+    }
+  }
+
+  if (!response?.ok) {
+    throw new Error(groqErrorMessage(response?.status ?? 404, lastDetail));
   }
 
   const payload = (await response.json()) as {
