@@ -20,6 +20,20 @@
             }
             <p class="role">{{ job.role }}</p>
             <p class="period">{{ job.period }}</p>
+            @if (job.liveUrl || job.githubUrl) {
+              <div class="links">
+                @if (job.liveUrl) {
+                  <a [href]="job.liveUrl" target="_blank" rel="noopener noreferrer">
+                    {{ i18n.t().experience.live }}
+                  </a>
+                }
+                @if (job.githubUrl) {
+                  <a [href]="job.githubUrl" target="_blank" rel="noopener noreferrer">
+                    {{ i18n.t().experience.github }}
+                  </a>
+                }
+              </div>
+            }
           </div>
 
           <div class="body">

@@ -88,6 +88,8 @@ export interface LocalizedJob {
   note?: string;
   bullets: string[];
   tags: string[];
+  liveUrl?: string;
+  githubUrl?: string;
 }
 
 export interface LocalizedEducation {
@@ -226,12 +228,12 @@ export const PROFILE: ProfileFacts = {
     'أصمم وأبني منتجات ويب وموبايل قابلة للتوسع باستخدام .NET وAngular وFlutter — من منصات ERP متعددة المستأجرين إلى إصدارات متاجر التطبيقات.',
   ),
   summary: text(
-    '.NET / full-stack developer with 3+ years of experience designing and delivering scalable web and mobile applications using .NET, Angular, Flutter, and SQL Server. Experienced in ERP and HR solutions, RESTful APIs, Multi-Tenant SaaS platforms, AWS integrations, and mobile application deployment. Targeting remote roles.',
-    'مطورة .NET وبرمجيات كاملة بخبرة 3+ سنوات في تصميم وتطوير تطبيقات ويب وموبايل قابلة للتوسع باستخدام .NET وAngular وFlutter وSQL Server. خبرة في حلول ERP وHR وواجهات REST ومنصات SaaS متعددة المستأجرين وتكاملات AWS ونشر تطبيقات الموبايل. أستهدف فرص العمل عن بُعد.',
+    '.NET / full-stack developer with 3+ years of experience designing and delivering scalable web and mobile applications using .NET, Angular, Flutter, and SQL Server. Strong experience in educational systems (Jupiter Academy), plus ERP and HR solutions, RESTful APIs, Multi-Tenant SaaS platforms, AWS integrations, and mobile application deployment. Targeting remote roles.',
+    'مطورة .NET وبرمجيات كاملة بخبرة 3+ سنوات في تصميم وتطوير تطبيقات ويب وموبايل قابلة للتوسع باستخدام .NET وAngular وFlutter وSQL Server. خبرة قوية في الأنظمة التعليمية (جوبتر أكاديمي)، إضافة إلى حلول ERP وHR وواجهات REST ومنصات SaaS متعددة المستأجرين وتكاملات AWS ونشر تطبيقات الموبايل. أستهدف فرص العمل عن بُعد.',
   ),
   focusItems: {
-    en: ['.NET APIs', 'Angular apps', 'Flutter mobile', 'Multi-tenant SaaS'],
-    ar: ['واجهات .NET', 'تطبيقات Angular', 'موبايل Flutter', 'SaaS متعدد المستأجرين'],
+    en: ['.NET APIs', 'Angular apps', 'Educational systems', 'Multi-tenant SaaS'],
+    ar: ['واجهات .NET', 'تطبيقات Angular', 'أنظمة تعليمية', 'SaaS متعدد المستأجرين'],
   },
   yearsValue: '3+',
 };
@@ -449,6 +451,31 @@ export const PROJECTS: PortfolioProject[] = [
 ];
 
 export const EXPERIENCE: ExperienceItem[] = [
+  {
+    company: 'Jupiter Software',
+    companyUrl: 'https://www.jupitersoftware.net',
+    role: text('Full Stack Developer — Educational Systems', 'مطورة برمجيات كاملة — أنظمة تعليمية'),
+    period: text('2024 – Present', '2024 – حتى الآن'),
+    projectId: 'jupiter-platform',
+    bullets: [
+      text(
+        'Built and maintained the Jupiter Educational Platform for courses, batches, enrollments, and student portals.',
+        'بنيت وحافظت على منصة جوبتر التعليمية للكورسات والمجموعات والتسجيل وبوابات الطلاب.',
+      ),
+      text(
+        'Delivered attendance, homework, competitions, finance, and bilingual learning workflows in Angular and ASP.NET Core.',
+        'قدّمت الحضور والواجبات والمسابقات والمالية ومسارات التعلم ثنائية اللغة باستخدام Angular وASP.NET Core.',
+      ),
+      text(
+        'Documented the public HR case study for employers reviewing educational-system experience.',
+        'وثّقت دراسة الحالة العامة للموارد البشرية لأصحاب العمل الذين يراجعون خبرة الأنظمة التعليمية.',
+      ),
+      text(
+        'Published the live academy product and the public GitHub case study for hiring review.',
+        'نشرت منتج الأكاديمية المباشر ودراسة الحالة العامة على GitHub لمراجعة التوظيف.',
+      ),
+    ],
+  },
   {
     company: 'Bussma Solutions',
     companyUrl: 'https://bussmasolutions.com/en',
@@ -689,6 +716,8 @@ export function localizedPortfolio(lang: 'en' | 'ar', content = publishedContent
         note: project?.note?.[lang],
         bullets: jobBullets(content, job, lang),
         tags: project?.tags ?? [],
+        liveUrl: project?.link,
+        githubUrl: project?.githubUrl,
       };
     }),
     education: content.education.map((item) => ({

@@ -56,6 +56,8 @@ export interface UiCopy {
     eyebrow: string;
     title: string;
     product: string;
+    live: string;
+    github: string;
     jobs: LocalizedJob[];
   };
   projects: {
@@ -144,6 +146,8 @@ const EN: Chrome = {
     eyebrow: 'Experience',
     title: 'Where I\u2019ve made an impact',
     product: 'Product',
+    live: 'Live',
+    github: 'GitHub',
   },
   projects: {
     eyebrow: 'Projects',
@@ -210,6 +214,8 @@ const AR: Chrome = {
     eyebrow: 'الخبرة',
     title: 'أين صنعت أثراً',
     product: 'المنتج',
+    live: 'مباشر',
+    github: 'GitHub',
   },
   projects: {
     eyebrow: 'المشاريع',
