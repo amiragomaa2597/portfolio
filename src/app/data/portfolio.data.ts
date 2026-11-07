@@ -346,10 +346,14 @@ export const PROJECTS: PortfolioProject[] = [
   },
   {
     id: 'kiddy-ranch',
-    name: 'Kiddy Ranch Platform',
+    name: 'Kiddy Ranch Platform — Nursery Website, Student Management & Transactions (Angular & ASP.NET Core)',
     summary: text(
       'Nursery marketing site plus student records, payments, and day-to-day operations.',
       'موقع حضانة مع سجلات الطلاب والمدفوعات والتشغيل اليومي.',
+    ),
+    note: text(
+      'CV title for nursery website, student management, and transactions.',
+      'عنوان السيرة لموقع الحضانة وإدارة الطلاب والمعاملات.',
     ),
     features: [
       text('Public family website and enrollment path', 'موقع عام للعائلات وطريق للتسجيل'),
@@ -473,6 +477,34 @@ export const EXPERIENCE: ExperienceItem[] = [
       text(
         'Published the live academy product and the public GitHub case study for hiring review.',
         'نشرت منتج الأكاديمية المباشر ودراسة الحالة العامة على GitHub لمراجعة التوظيف.',
+      ),
+    ],
+  },
+  {
+    company: 'Kiddy Ranch',
+    companyUrl: 'https://www.kiddyranch.com',
+    role: text(
+      'Kiddy Ranch Platform — Nursery Website, Student Management & Transactions (Angular & ASP.NET Core)',
+      'منصة كيدي رانش — موقع الحضانة وإدارة الطلاب والمعاملات (Angular وASP.NET Core)',
+    ),
+    period: text('2024 – Present', '2024 – حتى الآن'),
+    projectId: 'kiddy-ranch',
+    bullets: [
+      text(
+        'Built the public nursery website so families can understand the place and enroll.',
+        'بنيت الموقع العام للحضانة حتى تتعرّف العائلات على المكان وتسجّل.',
+      ),
+      text(
+        'Delivered student management, fees, printable invoices, and day-to-day transactions.',
+        'قدّمت إدارة الطلاب والرسوم والفواتير القابلة للطباعة والمعاملات اليومية.',
+      ),
+      text(
+        'Implemented the full stack with Angular and ASP.NET Core.',
+        'نفّذت المنظومة كاملة باستخدام Angular وASP.NET Core.',
+      ),
+      text(
+        'Published the live site and the public GitHub case study for hiring review.',
+        'نشرت الموقع المباشر ودراسة الحالة العامة على GitHub لمراجعة التوظيف.',
       ),
     ],
   },
