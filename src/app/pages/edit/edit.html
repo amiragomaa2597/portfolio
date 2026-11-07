@@ -83,6 +83,8 @@
           <label>{{ copy().link }} <input [value]="project.link ?? ''" (input)="project.link = text($event) || undefined" /></label>
           <label>{{ copy().github }} <input [value]="project.githubUrl ?? ''" (input)="project.githubUrl = text($event) || undefined" /></label>
           <label>{{ copy().githubRepo }} <input [value]="project.githubRepo ?? ''" (input)="project.githubRepo = text($event) || undefined" /></label>
+          <label>{{ copy().playStore }} <input [value]="project.playStoreUrl ?? ''" (input)="project.playStoreUrl = text($event) || undefined" /></label>
+          <label>{{ copy().appStore }} <input [value]="project.appStoreUrl ?? ''" (input)="project.appStoreUrl = text($event) || undefined" /></label>
           <button type="button" (click)="removeAt(draft.projects, $index)">{{ copy().remove }}</button>
         </article>
       }

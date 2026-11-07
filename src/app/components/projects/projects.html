@@ -13,7 +13,7 @@
             @if (project.note) {
               <p class="note">{{ project.note }}</p>
             }
-            @if (project.link || project.githubUrl) {
+            @if (project.link || project.githubUrl || project.playStoreUrl || project.appStoreUrl) {
               <div class="links">
                 @if (project.link) {
                   <a [href]="project.link" target="_blank" rel="noopener noreferrer">
@@ -23,6 +23,16 @@
                 @if (project.githubUrl) {
                   <a [href]="project.githubUrl" target="_blank" rel="noopener noreferrer">
                     {{ i18n.t().projects.github }}
+                  </a>
+                }
+                @if (project.playStoreUrl) {
+                  <a [href]="project.playStoreUrl" target="_blank" rel="noopener noreferrer">
+                    {{ i18n.t().projects.playStore }}
+                  </a>
+                }
+                @if (project.appStoreUrl) {
+                  <a [href]="project.appStoreUrl" target="_blank" rel="noopener noreferrer">
+                    {{ i18n.t().projects.appStore }}
                   </a>
                 }
               </div>

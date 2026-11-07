@@ -215,10 +215,24 @@ export async function downloadCvPdf(cv: CvDocument): Promise<void> {
   section(CV_HEADINGS[3]);
   for (const project of cv.projects) {
     pushText(rows, project.name, 11, 'F2');
-    pushText(rows, `${project.company} | ${project.period}`, BODY, 'F1');
+    if (project.company || project.period) {
+      pushText(rows, [project.company, project.period].filter(Boolean).join(' | '), BODY, 'F1');
+    }
     pushText(rows, project.summary, BODY, 'F1');
     if (project.note) {
       pushText(rows, project.note, BODY, 'F1');
+    }
+    if (project.link) {
+      pushText(rows, project.link, BODY, 'F1', project.link);
+    }
+    if (project.githubUrl) {
+      pushText(rows, project.githubUrl, BODY, 'F1', project.githubUrl);
+    }
+    if (project.playStoreUrl) {
+      pushText(rows, project.playStoreUrl, BODY, 'F1', project.playStoreUrl);
+    }
+    if (project.appStoreUrl) {
+      pushText(rows, project.appStoreUrl, BODY, 'F1', project.appStoreUrl);
     }
     pushText(rows, `Technologies: ${project.tags.join(', ')}`, BODY, 'F1');
   }

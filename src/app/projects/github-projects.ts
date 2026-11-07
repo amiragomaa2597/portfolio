@@ -74,6 +74,8 @@ export async function syncFeaturedGithubProjects(
         link: live || next[index].link,
         githubUrl: meta.html_url,
         githubRepo: featured.repo,
+        playStoreUrl: next[index].playStoreUrl,
+        appStoreUrl: next[index].appStoreUrl,
       };
     } else {
       next.unshift(patch);

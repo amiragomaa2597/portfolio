@@ -65,6 +65,8 @@ export interface UiCopy {
     title: string;
     live: string;
     github: string;
+    playStore: string;
+    appStore: string;
     items: LocalizedProject[];
   };
   education: {
@@ -154,6 +156,8 @@ const EN: Chrome = {
     title: 'Products I have shipped',
     live: 'Live',
     github: 'GitHub',
+    playStore: 'Google Play',
+    appStore: 'App Store',
   },
   education: {
     eyebrow: 'Education',
@@ -222,6 +226,8 @@ const AR: Chrome = {
     title: 'منتجات بنيتها',
     live: 'مباشر',
     github: 'GitHub',
+    playStore: 'Google Play',
+    appStore: 'App Store',
   },
   education: {
     eyebrow: 'التعليم',

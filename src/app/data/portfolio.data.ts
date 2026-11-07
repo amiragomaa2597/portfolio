@@ -37,6 +37,10 @@ export interface PortfolioProject {
   githubUrl?: string;
   /** owner/repo used to refresh metadata from GitHub. */
   githubRepo?: string;
+  /** Google Play listing. */
+  playStoreUrl?: string;
+  /** Apple App Store listing. */
+  appStoreUrl?: string;
 }
 
 export interface ExperienceItem {
@@ -126,6 +130,8 @@ export interface LocalizedProject {
   tags: string[];
   link?: string;
   githubUrl?: string;
+  playStoreUrl?: string;
+  appStoreUrl?: string;
 }
 
 export interface LocalizedPortfolio {
@@ -192,6 +198,10 @@ export interface CvProject {
   summary: string;
   note?: string;
   tags: string[];
+  link?: string;
+  githubUrl?: string;
+  playStoreUrl?: string;
+  appStoreUrl?: string;
 }
 
 export interface CvEducation {
@@ -343,6 +353,7 @@ export const PROJECTS: PortfolioProject[] = [
     link: 'https://www.jupitersoftware.net',
     githubUrl: 'https://github.com/amiragomaa2597/Jupiter-Educational-Platform',
     githubRepo: 'amiragomaa2597/Jupiter-Educational-Platform',
+    playStoreUrl: 'https://play.google.com/store/apps/details?id=com.jupitersoftware.jupiterportal',
   },
   {
     id: 'kiddy-ranch',
@@ -429,7 +440,8 @@ export const PROJECTS: PortfolioProject[] = [
       ),
     ],
     tags: ['.NET', 'Angular', 'Flutter', 'AWS S3', 'Docker', 'Multi-Tenant'],
-    link: 'https://bussmasolutions.com/en',
+    link: 'https://hr.bussma.com',
+    playStoreUrl: 'https://play.google.com/store/apps/details?id=com.bussma.hr',
   },
   {
     id: 'vibes',
@@ -451,73 +463,23 @@ export const PROJECTS: PortfolioProject[] = [
       text('Integrated DevExpress reporting solutions.', 'دمجت حلول تقارير DevExpress.'),
     ],
     tags: ['Angular', '.NET', 'HR Systems', 'DevExpress', 'Realtime'],
+    link: 'https://vibes.community',
+    playStoreUrl: 'https://play.google.com/store/apps/details?id=com.xlabgroup.vibeshr',
+    appStoreUrl: 'https://apps.apple.com/eg/app/vibes-hr/id6587574999',
   },
 ];
 
 export const EXPERIENCE: ExperienceItem[] = [
   {
-    company: 'Jupiter Software',
-    companyUrl: 'https://www.jupitersoftware.net',
-    role: text('Full Stack Developer — Educational Systems', 'مطورة برمجيات كاملة — أنظمة تعليمية'),
-    period: text('2024 – Present', '2024 – حتى الآن'),
-    projectId: 'jupiter-platform',
-    bullets: [
-      text(
-        'Built and maintained the Jupiter Educational Platform for courses, batches, enrollments, and student portals.',
-        'بنيت وحافظت على منصة جوبتر التعليمية للكورسات والمجموعات والتسجيل وبوابات الطلاب.',
-      ),
-      text(
-        'Delivered attendance, homework, competitions, finance, and bilingual learning workflows in Angular and ASP.NET Core.',
-        'قدّمت الحضور والواجبات والمسابقات والمالية ومسارات التعلم ثنائية اللغة باستخدام Angular وASP.NET Core.',
-      ),
-      text(
-        'Documented the public HR case study for employers reviewing educational-system experience.',
-        'وثّقت دراسة الحالة العامة للموارد البشرية لأصحاب العمل الذين يراجعون خبرة الأنظمة التعليمية.',
-      ),
-      text(
-        'Published the live academy product and the public GitHub case study for hiring review.',
-        'نشرت منتج الأكاديمية المباشر ودراسة الحالة العامة على GitHub لمراجعة التوظيف.',
-      ),
-    ],
-  },
-  {
-    company: 'Kiddy Ranch',
-    companyUrl: 'https://www.kiddyranch.com',
-    role: text(
-      'Kiddy Ranch Platform — Nursery Website, Student Management & Transactions (Angular & ASP.NET Core)',
-      'منصة كيدي رانش — موقع الحضانة وإدارة الطلاب والمعاملات (Angular وASP.NET Core)',
-    ),
-    period: text('2024 – Present', '2024 – حتى الآن'),
-    projectId: 'kiddy-ranch',
-    bullets: [
-      text(
-        'Built the public nursery website so families can understand the place and enroll.',
-        'بنيت الموقع العام للحضانة حتى تتعرّف العائلات على المكان وتسجّل.',
-      ),
-      text(
-        'Delivered student management, fees, printable invoices, and day-to-day transactions.',
-        'قدّمت إدارة الطلاب والرسوم والفواتير القابلة للطباعة والمعاملات اليومية.',
-      ),
-      text(
-        'Implemented the full stack with Angular and ASP.NET Core.',
-        'نفّذت المنظومة كاملة باستخدام Angular وASP.NET Core.',
-      ),
-      text(
-        'Published the live site and the public GitHub case study for hiring review.',
-        'نشرت الموقع المباشر ودراسة الحالة العامة على GitHub لمراجعة التوظيف.',
-      ),
-    ],
-  },
-  {
     company: 'Bussma Solutions',
-    companyUrl: 'https://bussmasolutions.com/en',
+    companyUrl: 'https://hr.bussma.com',
     role: text('Full Stack Developer', 'مطورة برمجيات كاملة'),
     period: text('Mar 2025 – Present', 'مارس 2025 – حتى الآن'),
     projectId: 'bussma-erp',
     bullets: [
       text(
-        'Developed Angular web apps and ASP.NET Core backend services.',
-        'طورت تطبيقات Angular وخدمات ASP.NET Core.',
+        'Developed Angular web apps and ASP.NET Core backend services for Bussma HR.',
+        'طورت تطبيقات Angular وخدمات ASP.NET Core لمنصة Bussma HR.',
       ),
       text(
         'Implemented Multi-Tenant architecture for multiple clients.',
@@ -535,7 +497,7 @@ export const EXPERIENCE: ExperienceItem[] = [
   },
   {
     company: 'XLab Group',
-    companyUrl: 'https://xlab-group.com/',
+    companyUrl: 'https://vibes.community',
     role: text('Full Stack Developer', 'مطورة برمجيات كاملة'),
     period: text('2023 – Feb 2025', '2023 – فبراير 2025'),
     projectId: 'vibes',
@@ -736,6 +698,8 @@ export function localizedPortfolio(lang: 'en' | 'ar', content = publishedContent
       tags: project.tags ?? [],
       link: project.link,
       githubUrl: project.githubUrl,
+      playStoreUrl: project.playStoreUrl,
+      appStoreUrl: project.appStoreUrl,
     })),
     jobs: content.experience.map((job) => {
       const project = job.projectId ? findProject(content.projects, job.projectId) : undefined;
@@ -853,24 +817,20 @@ export function buildCvDocument(content = publishedContent(), strict = true): Cv
         bullets: jobBullets(content, job, 'en'),
       };
     }),
-    projects: content.experience.flatMap((job) => {
-      if (!job.projectId) {
-        return [];
-      }
-      const project = findProject(content.projects, job.projectId);
-      if (!project) {
-        return [];
-      }
-      return [
-        {
-          name: project.name,
-          company: job.company,
-          period: job.period.en,
-          summary: project.summary.en,
-          note: project.note?.en,
-          tags: project.tags,
-        },
-      ];
+    projects: content.projects.map((project) => {
+      const job = content.experience.find((item) => item.projectId === project.id);
+      return {
+        name: project.name,
+        company: job?.company ?? '',
+        period: job?.period.en ?? '',
+        summary: project.summary.en,
+        note: project.note?.en,
+        tags: project.tags,
+        link: project.link,
+        githubUrl: project.githubUrl,
+        playStoreUrl: project.playStoreUrl,
+        appStoreUrl: project.appStoreUrl,
+      };
     }),
     education: content.education.map((item) => ({
       title: item.title.en,
