@@ -1,23 +1,25 @@
 import { buildCvDocument, type CvDocument, type PortfolioContent } from '../data/portfolio.data';
 import { tailorCv } from './match-job';
 
-const KEY_STORAGE = 'portfolio.openaiKey';
+const KEY_STORAGE = 'portfolio.groqKey';
+const LEGACY_KEY_STORAGE = 'portfolio.openaiKey';
 
-export function readOpenAiKey(): string {
+export function readGroqKey(): string {
   try {
-    return localStorage.getItem(KEY_STORAGE) ?? '';
+    return localStorage.getItem(KEY_STORAGE) ?? localStorage.getItem(LEGACY_KEY_STORAGE) ?? '';
   } catch {
     return '';
   }
 }
 
-export function writeOpenAiKey(key: string): void {
+export function writeGroqKey(key: string): void {
   try {
     if (key.trim()) {
       localStorage.setItem(KEY_STORAGE, key.trim());
     } else {
       localStorage.removeItem(KEY_STORAGE);
     }
+    localStorage.removeItem(LEGACY_KEY_STORAGE);
   } catch {
     /* ignore */
   }
@@ -145,6 +147,16 @@ function parseAiJson(raw: string): unknown {
   return JSON.parse(body);
 }
 
+function groqErrorMessage(status: number, detail: string): string {
+  if (status === 401) {
+    return 'Groq rejected the API key. Create a new key at console.groq.com/keys.';
+  }
+  if (status === 429) {
+    return 'Groq free limit reached. Wait a minute and try again.';
+  }
+  return detail || `Groq request failed (${status})`;
+}
+
 export async function generateCvWithAi(
   content: PortfolioContent,
   jobPost: string,
@@ -152,14 +164,14 @@ export async function generateCvWithAi(
 ): Promise<{ cv: CvDocument; matched: string[]; missing: string[] }> {
   const base = buildCvDocument(content, false);
   const local = tailorCv(content, jobPost);
-  const response = await fetch('https://api.openai.com/v1/chat/completions', {
+  const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${apiKey.trim()}`,
     },
     body: JSON.stringify({
-      model: 'gpt-4o-mini',
+      model: 'llama-3.3-70b-versatile',
       temperature: 0.2,
       response_format: { type: 'json_object' },
       messages: [
@@ -190,7 +202,7 @@ export async function generateCvWithAi(
 
   if (!response.ok) {
     const detail = await response.text();
-    throw new Error(detail || `OpenAI request failed (${response.status})`);
+    throw new Error(groqErrorMessage(response.status, detail));
   }
 
   const payload = (await response.json()) as {
@@ -198,7 +210,7 @@ export async function generateCvWithAi(
   };
   const contentText = payload.choices?.[0]?.message?.content;
   if (!contentText) {
-    throw new Error('OpenAI returned an empty response.');
+    throw new Error('Groq returned an empty response.');
   }
 
   const parsed = parseAiJson(contentText) as CvDocument & {

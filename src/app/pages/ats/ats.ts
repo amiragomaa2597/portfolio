@@ -1,5 +1,5 @@
 import { Component, computed, inject, signal } from '@angular/core';
-import { generateCvWithAi, readOpenAiKey, writeOpenAiKey } from '../../ats/ai-cv';
+import { generateCvWithAi, readGroqKey, writeGroqKey } from '../../ats/ai-cv';
 import { tailorCv } from '../../ats/match-job';
 import { downloadCvPdf } from '../../cv/download-cv';
 import {
@@ -23,7 +23,7 @@ export class AtsPage {
   readonly headings = CV_HEADINGS;
   readonly copy = computed(() => (this.i18n.lang() === 'ar' ? AR : EN));
   readonly jobPost = signal('');
-  readonly apiKey = signal(readOpenAiKey());
+  readonly apiKey = signal(readGroqKey());
   readonly draft = signal<CvDocument | null>(null);
   readonly matched = signal<string[]>([]);
   readonly missing = signal<string[]>([]);
@@ -37,7 +37,7 @@ export class AtsPage {
   setKey(event: Event): void {
     const value = (event.target as HTMLInputElement).value;
     this.apiKey.set(value);
-    writeOpenAiKey(value);
+    writeGroqKey(value);
   }
 
   text(event: Event): string {
@@ -127,8 +127,8 @@ const EN = {
   title: 'Shape the CV to the role',
   lead: 'Paste the job post, generate with AI from your portfolio facts, edit the preview, then download a PDF with clickable links.',
   placeholder: 'Paste the job requirements here',
-  apiKey: 'OpenAI API key',
-  apiHint: 'Saved only in this browser. Never committed to GitHub.',
+  apiKey: 'Groq API key',
+  apiHint: 'Free key from console.groq.com. Saved only in this browser.',
   buildAi: 'Generate with AI',
   buildLocal: 'Local match only',
   download: 'Download PDF',
@@ -136,7 +136,7 @@ const EN = {
   missing: 'Left out',
   noneMissing: 'Nothing in the post was left out.',
   empty: 'Paste a job post first.',
-  needKey: 'Add your OpenAI API key to generate with AI.',
+  needKey: 'Add your Groq API key to generate with AI.',
   aiFailed: 'AI generation failed.',
   edit: 'Edit the preview before download',
   busy: 'Generating…',
@@ -147,8 +147,8 @@ const AR = {
   title: 'تهيئة السيرة للوظيفة',
   lead: 'الصقي إعلان الوظيفة، وولّدي السيرة بالذكاء الاصطناعي من حقائق معرضك، وعدّلي المعاينة، ثم حمّلي PDF بروابط قابلة للضغط.',
   placeholder: 'الصقي متطلبات الوظيفة هنا',
-  apiKey: 'مفتاح OpenAI',
-  apiHint: 'يُحفظ في هذا المتصفح فقط. لا يُرفع إلى GitHub.',
+  apiKey: 'مفتاح Groq',
+  apiHint: 'مفتاح مجاني من console.groq.com. يُحفظ في هذا المتصفح فقط.',
   buildAi: 'توليد بالذكاء الاصطناعي',
   buildLocal: 'مطابقة محلية فقط',
   download: 'تحميل PDF',
@@ -156,7 +156,7 @@ const AR = {
   missing: 'تُرك خارج السيرة',
   noneMissing: 'لا يوجد في الإعلان ما تُرك خارج السيرة.',
   empty: 'الصقي إعلان الوظيفة أولاً.',
-  needKey: 'أضيفي مفتاح OpenAI للتوليد بالذكاء الاصطناعي.',
+  needKey: 'أضيفي مفتاح Groq للتوليد بالذكاء الاصطناعي.',
   aiFailed: 'فشل التوليد بالذكاء الاصطناعي.',
   edit: 'عدّلي المعاينة قبل التحميل',
   busy: 'جارٍ التوليد…',
