@@ -141,7 +141,10 @@ export class AtsPage {
     if (!current) {
       return;
     }
-    void downloadCvPdf({ ...current, fileName: 'Amira_Gomaa_ATS.pdf' });
+    void downloadCvPdf({
+      ...current,
+      fileName: tailoredCvFileName(current.fullName, current.headline),
+    });
   }
 
   async copyMessage(): Promise<void> {
@@ -156,6 +159,23 @@ export class AtsPage {
       this.error.set(this.copy().copyFailed);
     }
   }
+}
+
+function tailoredCvFileName(fullName: string, headline: string): string {
+  const namePart = slugFilePart(fullName) || 'Amira_Gomaa';
+  const titleSource = headline.split('|')[0]?.trim() || headline;
+  const titlePart = slugFilePart(titleSource) || 'CV';
+  return `${namePart}_${titlePart}.pdf`;
+}
+
+function slugFilePart(value: string): string {
+  return value
+    .normalize('NFKD')
+    .replace(/[^\w\s-]+/g, ' ')
+    .trim()
+    .replace(/[\s_-]+/g, '_')
+    .replace(/^_+|_+$/g, '')
+    .slice(0, 80);
 }
 
 const EN = {
